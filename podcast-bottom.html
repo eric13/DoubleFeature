@@ -1,0 +1,96 @@
+<style type="text/css">
+.text-light { color: #999; }
+</style>
+
+<?php
+
+$episode = get_the_title();
+$episode = strtolower($episode);
+$episode = str_replace(" + ", "-", "$episode");
+$episode = str_replace(" ", "-", "$episode");
+$episode = str_replace("'", "", "$episode");
+$episode = str_replace("’", "", "$episode");
+$episode = str_replace(":", "", "$episode");
+$episode = str_replace("?", "", "$episode");
+$episode = str_replace(".", "", "$episode");
+$episode = str_replace(",", "", "$episode");
+$episode = str_replace("!", "", "$episode");
+
+// For apostrophies that just won't fucking die
+$episode = urlencode($episode);
+$episode = str_replace("%26%238216%3B", "", "$episode");
+$episode = str_replace("%26%238217%3B", "", "$episode");
+$episode = str_replace("%28", "", "$episode");
+$episode = str_replace("%29", "", "$episode");
+
+$cat = get_the_category(); 
+for ($i = 0; $i <count($cat); $i++) { $nn[$i] = $cat[$i]->category_nicename; }
+if (in_array("year1", $nn) || in_array("year2", $nn)) {
+  if (in_array("year1", $nn)) { $y1="1"; }
+	$domain = "tbmchicago.com/dfs/shows/";
+} else if (in_array("year3", $nn) || in_array("year4", $nn)) {
+	$domain = "awesomestart.com/dfs/shows/";
+} else {
+	$domain = "doublefeatureshow.com/media/";
+}
+
+// $dtest = gc_return(enclosure);
+
+// What does this do?
+if (strpos($dtest,"awesomestart")) {
+	$domain = "awesomestart.com/dfs/shows/";
+}
+
+if ($y1) {
+
+echo get_the_title();
+echo " <span class=\"text-light\">(Unavailable)</span>";
+
+} else {
+
+
+// Identify iOS and serve a different link
+
+	$isiPad = (bool) strpos(strtolower($_SERVER['HTTP_USER_AGENT']),'ipad');
+	$isiPhone = (bool) strpos(strtolower($_SERVER['HTTP_USER_AGENT']),'iphone');
+	$isiPod = (bool) strpos(strtolower($_SERVER['HTTP_USER_AGENT']),'ipod');
+	if ($isiPod) { $isiPhone = 0; }
+
+// If it's iOS
+
+	if ($isiPod || $isiPad || $isiPhone) {
+
+		$itms = gc_return(itms);
+		if (!$itms) { $itms = "https://itunes.apple.com/us/podcast/double-feature/id285298251"; }
+	    echo "
+		
+		<h3>Download Episode</h3>
+
+		<div style=\"align: left;\"><a href=\""; echo $itms; echo "\" rel=\"nofollow\"><img src=\"http://doublefeatureshow.com/images/download.png\" style=\"margin: 0px 8px -2px 0px; height 17px: ; width: 22px;\" /></a> <a href=\""; echo $itms; echo "\" rel=\"nofollow\">"; echo get_the_title(); echo"</a></div> "; 
+
+
+// If it's not iOS
+
+	} else {
+
+		echo "
+
+		<div style=\"float: left; padding-right: 8px; margin-bottom: -6px; height: 28px;\"><a href=\"http://"."$domain"."download.php?file="."$episode".".m4a\" rel=\"nofollow\"><img src=\"http://doublefeatureshow.com/images/download.png\" style=\"padding-top: 3px; height 17px: ; width: 22px;\" /></a></div><div style=\"float: left; display: table-cell; margin-bottom: -6px; height:28px;\"><a href=\"http://"."$domain"."$episode".".m4a\" rel=\"nofollow\">"; echo get_the_title(); echo"</a></div><div style=\"clear:both;\"></div> "; 
+
+	}
+
+}
+
+
+$fn = the_title("", "", false);
+$fn = explode(" + ", $fn);
+
+if (gc_return(time1)){ echo $fn[0] . ": "; gc(time1); }
+if (gc_return(time1) && gc_return(time2)) { echo " | "; }
+if (gc_return(time2)) { echo $fn[1] . ": "; gc(time2); }
+
+echo "<br /><br />";
+
+if ($y1) { echo "<span class=\"text-light\">Note: This episode is from Year 1 of Double Feature.<br />Year 1 episodes are currently unavailable.</span><br /><br />"; }
+
+?>
