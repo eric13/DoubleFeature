@@ -181,13 +181,15 @@ DESCRIPTION: Two-column fixed layout with one sidebar right of content
 	width: 100%;
 }
 #content {
-	margin: 0 280px 0 20px; /* Increase to shrink size of left side content */
+	float: left;
+	width: 580px;
+	margin: 0px 0px 0px 20px;
 }
 #primary,
 #secondary {
 	float: right;
 	overflow: hidden;
-	width: 230px; /* Decrease size to shrink size of right side content */
+	width: 230px;
 }
 #secondary {
 	clear: right;
