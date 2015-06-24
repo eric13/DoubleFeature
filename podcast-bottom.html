@@ -14,9 +14,11 @@
 		$s = str_replace("!", "", "$s");
 		$s = str_replace("(", "", "$s");
 		$s = str_replace(")", "", "$s");
+		$s = str_replace("…", "", "$s");
 		$s = str_replace(" ", "-", "$s");
-		// For apostrophes that just won't fucking die
+		// Catch characters after encoding
 		$s = urlencode($s);
+		$s = str_replace("%26%238230%3B", "", "$s");
 		$s = str_replace("%26%238216%3B", "", "$s");
 		$s = str_replace("%26%238217%3B", "", "$s");
 		$s = str_replace("%28", "", "$s");
