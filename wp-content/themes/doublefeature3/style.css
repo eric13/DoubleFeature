@@ -420,13 +420,10 @@ sup {
 sub {
 	top: .5ex;
 }
-input[type="text"],
+input[type="text"], .wpcf7-email, 
 textarea {
-	background: #f9f9f9;
-	border: 1px solid #ccc;
-	box-shadow: inset 1px 1px 1px rgba(0,0,0,0.1);
-	-moz-box-shadow: inset 1px 1px 1px rgba(0,0,0,0.1);
-	-webkit-box-shadow: inset 1px 1px 1px rgba(0,0,0,0.1);
+	background: #FFF;
+	border: 1px solid #BBB;
 	padding: 2px 4px;
 	font-size: 9pt !important;
 	color: #666 !important;
