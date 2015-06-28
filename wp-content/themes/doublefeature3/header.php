@@ -39,7 +39,6 @@
 	// Add the blog description as meta data
 	$site_description = get_bloginfo('description', 'display');
 	echo "$site_description"; ?>" />
-<link rel="profile" href="http://gmpg.org/xfn/11" />
 <link rel="apple-touch-icon" href="/images/favicon-ios.png" />
 <link rel="icon" type="image/png" href="/images/favicon-ios.png">
 <link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
