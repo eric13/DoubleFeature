@@ -44,7 +44,6 @@ echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>'; ?>
 
 <channel>
 	<title><?php bloginfo_rss('name'); ?></title>
-	<author><?php bloginfo_rss('name'); ?></author>
 	<link><?php bloginfo_rss('url') ?></link>
 	<language><?php bloginfo_rss( 'language' ); ?></language>
 	<copyright>Creative Commons 3.0 Attribution</copyright>
@@ -70,7 +69,7 @@ echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>'; ?>
 	<item>
 		<title><?php the_title_rss() ?></title>
 		<itunes:author><?php bloginfo_rss('name'); ?></itunes:author>
-		<itunes:subtitle><?php echo fixer( get_the_excerpt() ); ?></itunes:subtitle>
+		<itunes:subtitle><?php echo substr(fixer( get_the_excerpt() ),0,251 ). "..."; ?></itunes:subtitle>
 		<itunes:summary><?php echo fixer( get_the_excerpt() ); ?></itunes:summary>
 		<description><?php echo fixer( get_the_excerpt() ); ?></description>
 		<itunes:image href="http://doublefeature.fm/images/podcastart.jpg" />
