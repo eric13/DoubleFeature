@@ -26,7 +26,7 @@ $episode = str_replace("%28", "", "$episode");
 $episode = str_replace("%29", "", "$episode");
 
 $tracking = "http://media.blubrry.com/doublefeature/";
-$domain = "doublefeatureshow.com/media/";
+$domain = "doublefeature.fm/media/";
 
 // Determine which year
 $cat = get_the_category(); 
@@ -51,12 +51,12 @@ if (in_array("year1", $nn)) {
 		if (!$itms) { $itms = "https://itunes.apple.com/us/podcast/double-feature/id285298251"; }
 	    echo "
 		<h3>Download Episode</h3>
-		<div style=\"align: left;\"><a href=\""; echo $itms; echo "\" rel=\"nofollow\"><img src=\"http://doublefeatureshow.com/images/download.png\" style=\"margin: 0px 8px -2px 0px; height 17px: ; width: 22px;\" /></a> <a href=\""; echo $itms; echo "\" rel=\"nofollow\">"; echo get_the_title(); echo"</a></div> "; 
+		<div style=\"align: left;\"><a href=\""; echo $itms; echo "\" rel=\"nofollow\"><img src=\"/images/download.png\" style=\"margin: 0px 8px -2px 0px; height 17px: ; width: 22px;\" /></a> <a href=\""; echo $itms; echo "\" rel=\"nofollow\">"; echo get_the_title(); echo"</a></div> "; 
 
 	// If it's not iOS
 	} else {
 		echo "
-		<div style=\"float: left; padding-right: 8px; margin-bottom: -6px; height: 28px;\"><a href=\"".$tracking.$domain."download.php?file=".$episode.".m4a\" rel=\"nofollow\"><img src=\"http://doublefeatureshow.com/images/download.png\" style=\"padding-top: 3px; height 17px: ; width: 22px;\" /></a></div><div style=\"float: left; display: table-cell; margin-bottom: -6px; height:28px;\"><a href=\"".$tracking.$domain.$episode.".m4a\" rel=\"nofollow\">"; echo get_the_title(); echo"</a></div><div style=\"clear:both;\"></div> ";
+		<div style=\"float: left; padding-right: 8px; margin-bottom: -6px; height: 28px;\"><a href=\"".$tracking.$domain."download.php?file=".$episode.".m4a\" rel=\"nofollow\"><img src=\"/images/download.png\" style=\"padding-top: 3px; height 17px: ; width: 22px;\" /></a></div><div style=\"float: left; display: table-cell; margin-bottom: -6px; height:28px;\"><a href=\"".$tracking.$domain.$episode.".m4a\" rel=\"nofollow\">"; echo get_the_title(); echo"</a></div><div style=\"clear:both;\"></div> ";
 	}
 }
 
