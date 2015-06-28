@@ -56,7 +56,7 @@ echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>'; ?>
 		<itunes:name><?php bloginfo_rss('name'); ?></itunes:name>
 		<itunes:email>doublefeatureshow@icloud.com</itunes:email>
 	</itunes:owner>
-	<itunes:image href="http://doublefeatureshow.com/images/podcastart.jpg" />
+	<itunes:image href="http://doublefeature.fm/images/podcastart.jpg" />
 	<itunes:category text="TV &amp; Film" />
 	<itunes:explicit>yes</itunes:explicit>
 	<lastBuildDate><?php echo mysql2date('D, d M Y H:i:s +0000', get_lastpostmodified('GMT'), false); ?></lastBuildDate>
@@ -73,7 +73,7 @@ echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>'; ?>
 		<itunes:subtitle><?php echo fixer( get_the_excerpt() ); ?></itunes:subtitle>
 		<itunes:summary><?php echo fixer( get_the_excerpt() ); ?></itunes:summary>
 		<description><?php echo fixer( get_the_excerpt() ); ?></description>
-		<itunes:image href="http://doublefeatureshow.com/images/podcastart.jpg" />
+		<itunes:image href="http://doublefeature.fm/images/podcastart.jpg" />
 		<?php rss_enclosure(); ?>
 		<guid isPermaLink="false"><?php the_guid(); ?></guid>
 		<pubDate><?php echo mysql2date('D, d M Y H:i:s +0000', get_post_time('Y-m-d H:i:s', true), false); ?></pubDate>
