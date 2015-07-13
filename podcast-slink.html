@@ -28,14 +28,16 @@ $episode = str_replace("%29", "", "$episode");
 $tracking = "http://media.blubrry.com/doublefeature/";
 $domain = "doublefeature.fm/media/";
 
+$fn = the_title("", "", false);
+$fn = explode(" + ", $fn);
+
 // Determine which year
 $cat = get_the_category(); 
 for ($i = 0; $i <count($cat); $i++) { $nn[$i] = $cat[$i]->category_nicename; }
 if (in_array("year1", $nn)) {
 	
-	// Year 1 episode are offline
-	echo get_the_title();
-	echo " <span class=\"text-light\">(Unavailable)</span><br />";
+	// Year 1 Episode Information
+	echo "<div id='podcastStore'><a href='https://itunes.apple.com/us/album/year-1/id1017126800' target='_blank'><img src='/images/coverart-year-1_small.jpg' /></a><div>".get_the_title()."<br /><a href='https://itunes.apple.com/us/album/year-1/id1017126800' target='_blank'>Available on iTunes</a><br />Double Feature | Year 1 (2009)</div></div>";
 
 } else {
 
@@ -60,13 +62,13 @@ if (in_array("year1", $nn)) {
 	}
 }
 
-$fn = the_title("", "", false);
-$fn = explode(" + ", $fn);
-
-// Show track times if avaliable
-if (gc_return(time1)){ echo $fn[0] . ": "; gc(time1); }
-if (gc_return(time1) && gc_return(time2)) { echo " | "; }
-if (gc_return(time2)) { echo $fn[1] . ": "; gc(time2); }
+// If there are chapters
+if (!in_array("year1", $nn)) {
+	// Show track times if avaliable
+	if (gc_return(time1)){ echo $fn[0] . ": "; gc(time1); }
+	if (gc_return(time1) && gc_return(time2)) { echo " | "; }
+	if (gc_return(time2)) { echo $fn[1] . ": "; gc(time2); }
+}
 
 // Special Killaplaooza Links
 if (in_array("killapalooza", $nn)) {
@@ -81,9 +83,5 @@ if (in_array("killapalooza", $nn)) {
 if (!gc_return(time1) && !gc_return(time2)) { echo "<br />"; }
 
 echo "<br /><br />";
-
-if (in_array("year1", $nn)) {
-	echo "<span class=\"text-light\">Note: This episode is from Year 1 of Double Feature.<br />Year 1 episodes are currently unavailable.</span><br /><br />";
-}
 
 ?>
