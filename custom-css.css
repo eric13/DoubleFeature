@@ -1,0 +1,823 @@
+/* 
+ * Enter Your Custom CSS Here
+ *
+ * Do not place on server. This is just a copy
+ * of style found in Dashboard > Appearance > Custom CSS
+ * It is here for archival purposes.
+ *
+ */
+
+body, input[type="text"], input[type="email"], textarea  {
+	font-family:HelveticaNeue,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+body {
+	font-size:10pt;color:#333;
+}
+
+h3 {
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
+.hentry .entry-utility, #site-title,#site-description,.meta-sep,.author {
+	display:none;
+}
+
+#wrapper {
+	margin-top:0px;padding:0px;
+}
+
+#container {
+	margin-right: -270px;
+}
+
+#primary {
+	width: 214px;
+}
+
+#header {
+	padding:40px 0 0 0;
+}
+
+div#main {
+	width: 860px;
+}
+
+#main {
+	padding: 34px 0 0 0;
+}
+
+#main .widget-area ul {
+	padding: 0;
+}
+
+#content {
+	margin: 0 230px 0 0px;
+	padding-right: 30px;
+}
+
+#footer {
+	margin-bottom: 0px;
+}
+
+#site-info {
+	margin-left: 26px;
+}
+
+#site-generator {
+	display: none;
+}
+
+.entry-meta {
+	font-size:.8em;
+}
+
+.entry-content {
+	font-size:.9em;
+}
+
+.epBox {
+	display: inline-block;
+	width: 336px;
+}
+
+#wpcf7-f8179-p8164-o1 img.ajax-loader {
+	position: absolute;
+	margin: 6px 0px 0px 6px;
+}
+
+#wpcf7-f8179-p8164-o1 p {
+	margin-bottom: 16px;
+}
+
+div.wpcf7-mail-sent-ok, div.wpcf7-validation-errors {
+	margin: 0px;
+	padding: 0px;
+	border: none;
+	font-weight: bold;
+}
+
+div.wpcf7-mail-sent-ok {
+	color: #398f14;
+}
+
+div.wpcf7-validation-errors {
+	color: red;
+}
+
+.entry-content input {
+	margin: inherit;
+	margin-right: 10px;
+}
+
+textarea {
+	width: 450px;
+}
+
+#branding img {
+	border-top:2px solid #000;
+}
+
+#access a {
+	padding: 0 14px;
+}
+
+#content .button.mailing {
+	margin: 0px !important;
+}
+
+input[type="text"], input[type="email"], textarea {
+	background:#fff;
+	border:1px solid #bbb;
+	padding:2px 4px;
+	color:#666;
+}
+
+.button,#searchsubmit, #content .button.mailing {
+	padding:6px 10px;
+	-webkit-border-radius:2px 2px;
+	border:solid 1px #999;
+	background:-webkit-gradient(linear,0% 0%,0% 100%,from(#fff),to(#ddd));
+	color:#333;
+	text-decoration:none;
+	cursor:pointer;
+	display:inline-block;
+	text-align:center;
+	text-shadow:0px 1px 1px rgba(255,255,255,1);
+	line-height:1;
+}
+
+img.cvr {
+	margin-right: 16px;
+}
+
+img.cvr2 {
+	margin: 0px 12px 40px 0px;
+}
+
+img.cvr, img.cvr2 {
+	width: 250px;
+	height: 250px;
+	float: left;
+}
+
+#outerImageContainer, #imageDataContainer {
+	background-color: #000 !important;
+	color: #666 !important;
+	font-size: 1.1em !important;
+	font-weight: 100 !important;
+	font-family:HelveticaNeue,"Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+#jqlb_closelabel {
+	background-image: url(/images/closelabel.gif) !important;
+}
+
+.icn {
+	background-size: 25px;
+	padding:6px 0px 6px 32px;
+	background-position: 0;
+	background-repeat: no-repeat;
+	display: block;
+}
+
+.one-column #content {
+	margin: 0px;
+	width: 860px;
+}
+
+div#container.one-column {
+	float: inherit;
+	margin: inherit;
+	width: inherit;
+}
+
+a:link {
+	color: #4466d3;
+}
+
+a:visited {
+	color: #4466d3;
+}
+a:active,
+a:hover {
+	color: #666;
+}
+
+.entry-meta, .entry-meta a:link, .entry-meta a:active, .entry-meta a:visited {
+	color: #888;
+}
+
+.entry-title a:hover, .entry-meta a:hover,
+.entry-utility a:hover {
+	color: #ff7ca4;
+}
+
+.widget-container h3 {
+	margin-bottom: 4px;
+}
+
+.widget-container li {
+	line-height: 1.5em;
+}
+
+.galThumb {
+	width: 100px;
+	height:150px;
+	border: 1px solid #000;
+	margin: 0px 10px 20px 10px;
+}
+
+.cloudButton {
+	margin: 4px 8px 0px 0px;
+	height: 17px;
+	width: 22px;
+	background-size: 22px 17px;
+	background-image: url('/images/download.png');
+	float: left;
+}
+
+#podcastStore {
+	margin-bottom: 20px;
+}
+
+#podcastStore img {
+	width: 80px;
+	height: 80px;
+	vertical-align: top;
+}
+
+#podcastStore div {
+	height: 80px;
+	margin-left: 8px;
+	display: inline-block;
+}
+
+/* For Large Covers in Posts */
+#movie-box-a {
+	float: left;
+	width: 262px;
+	padding-right: 30px;
+}
+
+#movie-box-b {
+	float: left;
+	width: 262px;
+}
+
+.lbc {
+	height: 390px;
+	width: 260px;
+	border: 1px solid #000;
+	margin: 0px 16px 20px 0px;
+}
+
+.lbc:hover  {
+	border: 1px solid #000;
+}
+
+.itns_btn, .amazn_btn {
+	background-size: 84px 28px;
+	height: 28px;
+	width: 84px;
+	display: inline-block;
+}
+
+.itns_btn {
+	background-image: url(/images/itunes.gif);
+	margin-right: 8px;
+}
+
+.amazn_btn {
+	background-image: url(/images/amazon.gif);
+}
+
+.amazn_btn {
+	height: 28px;
+	width: 84px;
+	display: inline-block;
+}
+
+.dirpic {
+	margin: 0px 16px 0px 0px;
+}
+
+.startpage {
+	text-align:center;
+	padding-right: 8px;
+	display: inline-block;
+	margin-bottom: 30px;
+}
+
+.startpage img {
+	border: 1px solid #000000;
+}
+
+.widget_scott_timer ul {
+	margin: 0px !important;
+}
+
+.widget_scott_timer li {
+	list-style-type: none;
+}
+
+.home .sticky {
+	border-top: none;
+	border-radius: 10px;
+	background: #EEE;
+	padding: 2px 20px 1px;
+	margin: 0px 0px 30px;
+}
+
+.sticky div.entry-meta {
+	display: none;
+}
+
+a.ep-button {
+	color: #697986;
+	font-weight: bold;
+	border: 1px solid #d1d8db;
+	border-radius: 8px;
+	margin: 8px 12px 14px 0px;
+	background-color: #f7fafa;
+	background-size: 22px 22px;
+	background-repeat: no-repeat;
+	padding: 6px 14px 6px 36px;
+	vertical-align: center;
+	text-decoration: none;
+	display: inline-block;
+	background-position: 6px 6px;
+}
+
+a:active.ep-button {
+	border: 1px solid #c7ced1;
+	color: #3a5160;
+	background-color: #eff3f3;
+}
+
+a.icon-podcast {
+	background-image: url(/images/button-podcast.png);
+}
+
+a.icon-cloud {
+	background-image: url(/images/button-cloud.png);
+}
+
+.pod-date {
+	color: #999;
+	font-style: italic;
+}
+
+
+/* Search */
+
+#ajaxsearchlite1 .probox .proinput input, div[id*="ajaxsearchlite"] .probox .proinput input, div[id*="ajaxsearchlitesettings"].searchsettings .label {
+	font-family: HelveticaNeue, sans-serif;
+	color: #333 !important;
+	font-size: 14px;
+}
+
+#ajaxsearchlite1 .probox, div[id*="ajaxsearchlite"] .probox {
+	border: 1px solid #333;
+	border-radius: 4px;
+	padding: 4px 4px 4px 0px;
+}
+
+/* EACH PLACEHOLDER MUST HAVE A DIFFERENT RULE TO WORK */
+div[id*="ajaxsearchlite"] .probox .proinput input::-webkit-input-placeholder {
+	font-weight: normal;
+	font-family: inherit;
+	color: rgba(0, 0, 0, 0.6) !important;
+	text-shadow: 0px 0px 0px rgba(255, 255, 255, 0);
+}
+
+div[id*="ajaxsearchlite"] .probox .proinput input::-moz-placeholder {
+	font-weight: normal;
+	font-family: inherit;
+	color: rgba(0, 0, 0, 0.6) !important;
+	text-shadow: 0px 0px 0px rgba(255, 255, 255, 0);
+}
+
+div[id*="ajaxsearchlite"] .probox .proinput input:-ms-input-placeholder {
+	font-weight: normal;
+	font-family: inherit;
+	color: rgba(0, 0, 0, 0.6) !important;
+	text-shadow: 0px 0px 0px rgba(255, 255, 255, 0);
+}
+
+div[id*="ajaxsearchlite"] .probox .proinput input:-moz-placeholder {
+	font-weight: normal;
+	font-family: inherit;
+	color: rgba(0, 0, 0, 0.6) !important;
+	text-shadow: 0px 0px 0px rgba(255, 255, 255, 0);
+}
+
+div[id*="ajaxsearchlite"] .probox .proinput input.autocomplete {
+	font-weight: normal;
+	font-family: inherit;
+	color: rgb(0, 0, 0);
+	line-height: normal !important;
+	text-shadow: 0px 0px 0px rgba(255, 255, 255, 0);
+}
+
+div[id*="ajaxsearchlite"] .probox .prosettings .innericon svg, div[id*="ajaxsearchlite"] .probox .promagnifier .innericon svg {
+	fill: #666;
+}
+
+div[id*='ajaxsearchlite'] .probox div.asl_simple-circle {
+	border: 1px solid #333;
+	height: 18px;
+	width: 18px;
+	margin-right: -54px;
+	background: #FFF;
+}
+
+div[id*="ajaxsearchlitesettings"].searchsettings .label {
+	font-weight: 100;
+	font-size: 14px;
+	line-height: 14px;
+}
+
+div[id*="ajaxsearchlitesettings"].searchsettings {
+	box-shadow: none;
+	border: 1px solid #000;
+	outline: 4px solid #FFF;
+}
+
+div[id*="ajaxsearchliteres"].vertical {
+	box-shadow: none;
+	border: 2px solid #666;
+	outline: 6px solid #FFF;
+}
+
+div[id*="ajaxsearchlitesettings"].searchsettings fieldset .categoryfilter {
+	max-height: 330px;
+}
+
+div[id*="ajaxsearchlitesettings"].searchsettings .option label {
+	background-image: none !important;
+	box-shadow: none;
+	border: 1px solid #666;
+	background: #444;
+}
+
+div[id*='ajaxsearchlitesettings'].searchsettings .option label {
+	border-radius: 0px;
+}
+
+div[id*='ajaxsearchlite'] .probox .proinput {
+	margin: 0px 0px 0px 8px;
+}
+
+div.prosettings {
+	height: 15px !important;
+	width: 15x !important;
+	margin-top: 6px !important;
+	margin-right: -4px !important;
+}
+
+div.promagnifier {
+	width: 21px;
+	margin-right: 2px;
+}
+
+div[id*='ajaxsearchliteres'] .results .item {
+	padding: 6px;
+}
+
+div[id*="ajaxsearchliteres"] .results .item .asl_content h3 a {
+	line-height: 1 !important;
+}
+
+
+/* Search, Continued */
+
+div[id*='ajaxsearchlite'] .mCSB_container {
+	width: auto;
+	margin-right: 20px;
+	overflow: hidden;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_container.mCS_no_scrollbar {
+	margin-right: 0;
+}
+
+div[id*='ajaxsearchlite'] .mCustomScrollBox .mCSB_scrollTools {
+	width: 16px;
+	height: 100%;
+	top: 0;
+	right: 0;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_draggerContainer {
+	height: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonUp + .mCSB_draggerContainer {
+	/* padding-bottom: 40px; */
+	/* margin-top: 20px; */
+	margin-top: 4px;
+	padding-bottom: 4px;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_draggerRail {
+	width: 2px;
+	height: 100%;
+	margin: 0 auto;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_dragger {
+	cursor: pointer;
+	width: 100%;
+	height: 30px;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+	width: 6px;
+	/* box-shadow: 0 0 2px 0 #999; /* /* Dragger Bar */
+	box-shadow: none;
+	background: #999;
+	height: 100%;
+	margin: 0 auto;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	text-align: center;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonUp,
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonDown {
+	display: none !important;
+	height: 20px;
+	-overflow: hidden;
+	margin: 0 auto;
+	cursor: pointer;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonDown {
+	bottom: 0;
+	margin-top: -40px;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_horizontal .mCSB_container {
+	height: auto;
+	margin-right: 0;
+	margin-bottom: 20px;
+	overflow: hidden;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_horizontal .mCSB_container.mCS_no_scrollbar {
+	margin-bottom: 0;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_horizontal.mCustomScrollBox .mCSB_scrollTools {
+	width: 100%;
+	height: 26px;
+	top: auto;
+	right: auto;
+	bottom: 0;
+	left: 0;
+	overflow: hidden;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_horizontal .mCSB_scrollTools .mCSB_draggerContainer {
+	height: 23px;
+	width: auto;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_horizontal .mCSB_scrollTools .mCSB_buttonLeft + .mCSB_draggerContainer {
+	padding-bottom: 0;
+	padding-right: 20px;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_horizontal .mCSB_scrollTools .mCSB_draggerRail {
+	width: 100%;
+	height: 2px;
+	margin: 7px 0;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_horizontal .mCSB_scrollTools .mCSB_dragger {
+	width: 30px;
+	height: 100%;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_horizontal .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+	width: 100%;
+	height: 4px;
+	margin: 6px auto;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_horizontal .mCSB_scrollTools .mCSB_buttonLeft,
+div[id*='ajaxsearchlite'] .mCSB_horizontal .mCSB_scrollTools .mCSB_buttonRight {
+	width: 20px;
+	height: 100%;
+	overflow: hidden;
+	margin: 0 auto;
+	cursor: pointer;
+	float: left;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_horizontal .mCSB_scrollTools .mCSB_buttonRight {
+	right: 0;
+	bottom: auto;
+	margin-left: -40px;
+	margin-top: -16px;
+	float: right;
+}
+
+div[id*='ajaxsearchlite'] .mCustomScrollBox .mCSB_scrollTools {
+	opacity: 0.75;
+}
+
+div[id*='ajaxsearchlite'] .mCustomScrollBox:hover .mCSB_scrollTools {
+	opacity: 1;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_draggerRail {
+	background: #FFF !important; /* Rail */
+	/* filter: "alpha(opacity=40)"; */
+	/* -ms-filter: "alpha(opacity=40)"; */ /* old ie */
+}
+
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonUp,
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonDown,
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonLeft,
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonRight {
+	padding: 10px 0 0 0;
+	background: 0;
+	opacity: 0.4;
+	filter: "alpha(opacity=40)";
+	-ms-filter: "alpha(opacity=40)"; /* old ie */
+}
+
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonDown {
+	height: 0;
+	position: relative;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonDown:after {
+	top: 100%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonUp {
+	position: relative;
+	margin: 10px 0 0 0;
+	height: 0;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonUp:after {
+	bottom: 100%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+}
+
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonUp {
+	background-position: 0 0;
+	/*
+  sprites locations are 0 0/-16px 0/-32px 0/-48px 0 (light) and -80px 0/-96px 0/-112px 0/-128px 0 (dark)
+  */
+}
+
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonDown {
+	background-position: 0 -20px;
+	/*
+  sprites locations are 0 -20px/-16px -20px/-32px -20px/-48px -20px (light) and -80px -20px/-96px -20px/-112px -20px/-128px -20px (dark)
+  */
+}
+
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonLeft {
+	background-position: 0 -40px;
+	/*
+  sprites locations are 0 -40px/-20px -40px/-40px -40px/-60px -40px (light) and -80px -40px/-100px -40px/-120px -40px/-140px -40px (dark)
+  */
+}
+
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonRight {
+	background-position: 0 -56px;
+	/*
+  sprites locations are 0 -56px/-20px -56px/-40px -56px/-60px -56px (light) and -80px -56px/-100px -56px/-120px -56px/-140px -56px (dark)
+  */
+}
+
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonUp:hover,
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonDown:hover,
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonLeft:hover,
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonRight:hover {
+	opacity: 0.75;
+	filter: "alpha(opacity=75)";
+	-ms-filter: "alpha(opacity=75)"; /* old ie */
+}
+
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonUp:active,
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonDown:active,
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonLeft:active,
+div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonRight:active {
+	opacity: 0.9;
+	filter: "alpha(opacity=90)";
+	-ms-filter: "alpha(opacity=90)"; /* old ie */
+}
+
+
+
+
+
+.theTweet {
+	width: 500px;
+	padding: 20px;
+	border: 1px solid #ced6dc;
+	border-radius: 8px;
+	color: #1c2022;
+	font: normal normal 16px/1.4 Helvetica, Roboto, "Segoe UI", Calibri, sans-serif;
+	margin-bottom: 20px;
+}
+.theTweet p {
+	margin-bottom: 8px !important;
+}
+.theTweet a {
+	text-decoration: none;
+}
+.theTweet a:visited, .theTweet a:link {
+	color: #55acee;
+}
+.theTweet a:active, .theTweet a:hover {
+	color: #FFF;
+}
+.theTweetAvatar {
+	width: 40px;
+	height: 40px;
+	border-radius: 6px;
+	display: inline-block;
+	margin-right: 6px;
+}
+div.theTweetAuthorInfo {
+	vertical-align: top;
+	display: inline-block;
+}
+a.theTweetName {
+	display: block;
+	font-weight: 700;
+	color: #000 !important;
+}
+a.theTweetName:hover, a.theTweetName:active {
+	color: #3b94d9;
+}
+a.theTweetScreenName {
+	display: block;
+	font-size: 14px;
+	color: #697882 !important;
+	vertical-align: top;
+	line-height: 1;
+}
+.theTweetRight {
+	float:right;
+}
+a.theTweetFollowButton {
+	padding: 0px 14px 0px 32px;
+	height: 31px;
+	line-height: 30px;
+	border: 1px solid #6BABE8;
+	border-radius: 4px;
+	font-size: 14px;
+	font-weight: 700;
+	text-align: center;
+	background-color: #FFF;
+	display: block;
+	background-repeat: no-repeat;
+	background-size: 18px;
+	background-position-x: 10px;
+	background-position-y: 7px;
+	background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D%22icon%22%20fill%3D%22%2355acee%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.87%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.58%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E);
+}
+a.theTweetFollowButton:active, a.theTweetFollowButton:hover {
+	background-color: #55acee;
+	background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D%22icon%22%20fill%3D%22%23fff%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.87%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.58%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E);
+}
+.theTweetMetadata {
+	font-size: 14px;
+	color: #666;
+}
