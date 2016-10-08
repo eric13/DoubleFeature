@@ -302,6 +302,9 @@
 
 						public function __construct($i) {
 
+							// Sets up the postID
+							$postID = get_the_ID();
+
 							// Figures out film titles based on episode title
 							$f = the_title("", "", false);
 							$f = explode(" + ", $f);
@@ -309,15 +312,15 @@
 
 							// Wordpress stores information in variables labeled with a 1 or 2 instead of in an array.
 							if ($i=="1") {
-								$this->gcimdb = gc_return(imdb1);
-								$this->gcwiki = gc_return(wiki1);
-								$this->amzn = gc_return(amzn1);
-								$this->itns = gc_return(itns1);
+								$this->gcimdb = get_post_meta($postID, 'imdb1',true);
+								$this->gcwiki = get_post_meta($postID, 'wiki1',true);
+								$this->amzn = get_post_meta($postID, 'amzn1',true);
+								$this->itns = get_post_meta($postID, 'itns1',true);
 							} else {
-								$this->gcimdb = gc_return(imdb2);
-								$this->gcwiki = gc_return(wiki2);
-								$this->amzn = gc_return(amzn2);
-								$this->itns = gc_return(itns2);
+								$this->gcimdb = get_post_meta($postID, 'imdb2',true);
+								$this->gcwiki = get_post_meta($postID, 'wiki2',true);
+								$this->amzn = get_post_meta($postID, 'amzn2',true);
+								$this->itns = get_post_meta($postID, 'itns2',true);
 							}
 
 							// Query a third party IMDB API which retrieves a JSON
