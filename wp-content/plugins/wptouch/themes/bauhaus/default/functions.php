@@ -3,6 +3,7 @@
 add_action( 'foundation_enqueue_scripts', 'bauhaus_enqueue_scripts' );
 add_filter( 'amp_should_show_featured_image_in_header', 'bauhaus_should_show_thumbnail' );
 add_action( 'wp_loaded', 'bauhaus_featured_setup' );
+add_filter( 'bauhaus_featured_show', 'bauhaus_show_featured_slider_in_page', 10, 2 );
 global $bauhaus_featured_args;
 global $bauhaus_featured_posts;
 
@@ -164,9 +165,13 @@ function bauhaus_featured_modify_query( $query ) {
 			return;
 		}
 
+		if ( !$settings->bauhaus_featured_filter_posts && !$settings->bauhaus_featured_enabled ) {
+			return;
+		}
+
 		$should_modify_query = apply_filters(
 			'bauhaus_featured_should_modify_query',
-			( $query->is_single || $query->is_page || $query->is_feed || $query->is_search || $query->is_archive || $query->is_category ) == false, 
+			( $query->is_single || $query->is_page || $query->is_feed || $query->is_search || $query->is_archive || $query->is_category ) == false,
 			$query
 		);
 
@@ -178,9 +183,17 @@ function bauhaus_featured_modify_query( $query ) {
 
 		$post_array = array();
 
+		$post_count = 1;
+
 		if ( is_array( $bauhaus_featured_posts ) && count( $bauhaus_featured_posts ) > 0 ) {
 			foreach( $bauhaus_featured_posts as $post_id ) {
-				$post_array[] = '-' . $post_id;
+				$post_array[] = $post_id;
+
+				// ensure that we're not excluding more posts than in the slider
+				$post_count++;
+				if ( $post_count > $settings->bauhaus_featured_max_number_of_posts ) {
+					break;
+				}
 			}
 		}
 
@@ -278,17 +291,23 @@ function bauhaus_should_show_carousel_featured() {
 
 function bauhaus_featured_slider() {
 	global $bauhaus_featured_posts;
+
+	// ensure at least one featured post has been found
+	if ( $bauhaus_featured_posts === null || count($bauhaus_featured_posts) == 0 ) {
+		return;
+	}
+
 	$settings = bauhaus_get_settings();
 	$args = bauhaus_featured_get_args();
 	$classes = array();
 	if ( $settings->bauhaus_post_listing_autoplay ) {
 		$classes[] = 'autoplay';
 	}
-	
+
 	if ( $settings->bauhaus_post_listing_dots ) {
-		$classes[] = 'dots';	
+		$classes[] = 'dots';
 	}
-	
+
 	if ( function_exists( 'wptouch_custom_posts_add_to_search' ) ) {
 		$post_types = wptouch_custom_posts_add_to_search( array( 'post', 'page' ) );
 	} else {
@@ -301,6 +320,7 @@ function bauhaus_featured_slider() {
 
 		echo '<div class="carousel list-carousel ' . implode( ' ', $classes ) .'">';
 
+		// Custom main page image for Double Feature
 		echo "
 			<div class='carousel-cell is-selected' style='position: absolute; left: 90.67%;'><!-- post loop -->
 				<div rel='/subscribe'>
@@ -316,8 +336,29 @@ function bauhaus_featured_slider() {
 			get_template_part( 'layouts/carousel-post-loop' );
 			echo '</div>';
 		}
-		
-		echo '</div>';			
+
+		echo '</div>';
 
 	}
+}
+
+function bauhaus_show_featured_slider_in_page( $show_featured_slider, $featured_slider_enabled ) {
+	if ( bauhaus_allow_featured_slider_override() && $featured_slider_enabled == true ) {
+		$settings = bauhaus_get_settings();
+
+		global $post;
+		if ( $settings->featured_slider_page !== false && $post->ID == $settings->featured_slider_page ) {
+			$show_featured_slider = true;
+		} elseif ( $settings->featured_slider_page == true ) {
+			$show_featured_slider = false;
+		}
+	}
+
+	return $show_featured_slider;
+}
+
+function bauhaus_allow_featured_slider_override() {
+	$settings = wptouch_get_settings();
+	$foundation_settings = foundation_get_settings();
+	return $settings->homepage_landing != 'none' && $settings->homepage_landing != $foundation_settings->latest_posts_page;
 }

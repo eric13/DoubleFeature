@@ -1,10 +1,4 @@
 <?php
-
-/**
- * wp-content/plugins/wp-touch/core/theme.php
- *
- */
-
 // Main template functions for WPtouch Pro
 function wptouch_head() {
 	if ( is_single() ) {
@@ -52,14 +46,14 @@ function wptouch_the_content() {
 	$send = "";
         // Main Info and Links
         if(is_single() && has_category('podcast')) {
-		echo dfEpA("top");
-		echo "<div style='margin-top: -12px;' class='post-page-content'><h3>Episode Notes</h3>";
+					echo dfEpA("top");
+					echo "<div style='margin-top: -12px;' class='post-page-content'><h3>Episode Notes</h3>";
         }
         // The Content
         echo apply_filters( 'the_content', wptouch_get_content() );
         // Bottom Covers
         if(is_single() && has_category('podcast')) {
-                echo  dfEpA("bottom").'</div>';
+					echo  dfEpA("bottom").'</div>';
         }
 }
 

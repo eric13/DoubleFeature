@@ -1,0 +1,186 @@
+RewriteEngine On
+RewriteBase /
+
+# BEGIN rlrssslReallySimpleSSL rsssl_version[2.3.9]
+<IfModule mod_rewrite.c>
+RewriteEngine on
+
+RewriteCond %{HTTPS} !=on [NC]
+#wpmu rewritecond letsplayalienisolation.com
+RewriteCond %{HTTP_HOST} ^letsplayalienisolation\.com [OR]
+RewriteCond %{HTTP_HOST} ^www\.letsplayalienisolation\.com [OR]
+#end wpmu rewritecond letsplayalienisolation.com
+#wpmu rewritecond ericthirteen.com
+RewriteCond %{HTTP_HOST} ^ericthirteen\.com [OR]
+RewriteCond %{HTTP_HOST} ^www\.ericthirteen\.com [OR]
+#end wpmu rewritecond ericthirteen.com
+#wpmu rewritecond tbmchicago.com
+RewriteCond %{HTTP_HOST} ^tbmchicago\.com [OR]
+RewriteCond %{HTTP_HOST} ^www\.tbmchicago\.com [OR]
+#end wpmu rewritecond tbmchicago.com
+#wpmu rewritecond doublefeature.fm
+RewriteCond %{HTTP_HOST} ^doublefeature\.fm [OR]
+RewriteCond %{HTTP_HOST} ^www\.doublefeature\.fm [OR]
+#end wpmu rewritecond doublefeature.fm
+#wpmu rewritecond watchbrightfalls.com
+RewriteCond %{HTTP_HOST} ^watchbrightfalls\.com [OR]
+RewriteCond %{HTTP_HOST} ^www\.watchbrightfalls\.com [OR]
+#end wpmu rewritecond watchbrightfalls.com
+#wpmu rewritecond awesomestart.com
+RewriteCond %{HTTP_HOST} ^awesomestart\.com [OR]
+RewriteCond %{HTTP_HOST} ^www\.awesomestart\.com
+#end wpmu rewritecond awesomestart.com
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>
+# END rlrssslReallySimpleSSL
+
+#Double Feature Feed
+RewriteCond %{HTTP_HOST} ^doublefeature\.fm
+RewriteRule ^category/podcast/feed/?$ https://doublefeature.fm/feed/podcast [L]
+
+#Double Feature Lightbox
+RewriteCond %{HTTP_HOST} ^doublefeature\.fm
+RewriteRule ^wp-content/themes/twentyten/lightbox.min.css?$ https://doublefeature.fm/wp-content/themes/doublefeature/lightbox.min.css [L]
+
+#Double Feature Suicide Girls
+RewriteCond %{HTTP_HOST} ^doublefeature\.fm
+RewriteRule ^suicidegirls?$ https://doublefeature.fm/category/suicidegirls [L]
+
+# Double Feature Episodes: small, regular
+RewriteCond %{HTTP_HOST} ^doublefeature\.fm
+RewriteRule ^images/episodes/small/sm_(.*)\.(jpg|jpeg|png|gif)?$ /wp-content/uploads/sites/8/$1-500x500.$2 [L]
+RewriteCond %{HTTP_HOST} ^doublefeature\.fm
+RewriteRule ^images/episodes(/.*)?$ /wp-content/uploads/sites/8$1 [L]
+
+# Double Feature Covers: tiny, thumbnail, regular
+RewriteCond %{HTTP_HOST} ^doublefeature\.fm
+RewriteRule ^images/covers/tiny/tiny-(.*)\.(jpg|jpeg|png|gif)?$ /wp-content/uploads/sites/8/$1-200x300.$2 [L]
+RewriteCond %{HTTP_HOST} ^doublefeature\.fm
+RewriteRule ^images/covers/thumbnails/thumbnail-(.*)\.(jpg|jpeg|png|gif)?$ /wp-content/uploads/sites/8/$1-480x720.$2 [L]
+RewriteCond %{HTTP_HOST} ^doublefeature\.fm
+RewriteRule ^images/covers(/.*)?$ /wp-content/uploads/sites/8$1 [L]
+# Double Feature Images directory
+RewriteCond %{HTTP_HOST} ^doublefeature\.fm
+RewriteRule ^images(/.*)?$ /wp-content/uploads/sites/8$1 [L]
+# Double Feature Images directory
+RewriteCond %{HTTP_HOST} ^doublefeature\.fm
+RewriteRule ^media(/.*)?$ /wp-content/uploads/sites/8$1 [L]
+
+# Old media folder to newer AWS subdomain
+RewriteCond %{HTTP_HOST} ^doublefeature.fm [NC]
+RedirectMatch 301 ^/media/(.*)$ http://media.doublefeature.fm/$1
+
+# Double Feature Hotlinking
+RewriteCond %{HTTP_HOST} ^doublefeature\.fm
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?doublefeature.fm [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?google.com [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?bing.com [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?duckduckgo.com [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?ddg.co [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?ericthirteen.com [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?tbmchicago.com [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?letsplayalienisolation.com [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?watchbrightfalls.com [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?battleshippretension.com [NC]
+RewriteRule \.(jpg|jpeg|png|gif|svg)$ - [NC,F,L]
+
+#AwesomeStart gallery
+RewriteCond %{HTTP_HOST} ^awesomestart\.com
+RewriteRule ^gallery/movies(.*)?$ /?place=$1&page_id=1179 [L]
+RewriteCond %{HTTP_HOST} ^awesomestart\.com
+RewriteRule ^gallery/music(.*)?$ /?place=$1&page_id=1167 [L]
+RewriteCond %{HTTP_HOST} ^awesomestart\.com
+RewriteRule ^gallery/videogames(.*)?$ /?place=$1&page_id=1181 [L]
+RewriteCond %{HTTP_HOST} ^awesomestart\.com
+RewriteRule ^gallery/other(.*)?$ /?place=$1&page_id=1183 [L]
+RewriteCond %{HTTP_HOST} ^awesomestart\.com
+RewriteRule ^gallery/public(.*)?$ /?place=$1&page_id=1200 [L]
+RewriteCond %{HTTP_HOST} ^awesomestart\.com
+RewriteRule ^gallery/([A-Za-z0-9-]+)?$ /?pagename=gallery&place=$1 [L]
+
+# AwesomeStart directories
+RewriteCond %{HTTP_HOST} ^awesomestart\.com
+RewriteRule ^images(/.*)?$ /wp-content/uploads/sites/10$1 [L]
+
+#Awesomestart Public
+RewriteCond %{HTTP_HOST} ^awesomestart\.com
+RewriteRule ^public(/.*)?$ /wp-content/uploads/sites/10/public.php?id=$1 [L]
+
+# if this is an existing folder/file then leave
+RewriteCond %{HTTP_HOST} ^awesomestart\.com
+RewriteCond %{REQUEST_FILENAME} -d [OR]
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule . - [L]
+
+#Look for specific file types in the upload folder
+RewriteCond %{HTTP_HOST} ^awesomestart\.com
+RewriteCond %{REQUEST_URI} (\.jpg|\.jpeg|\.gif|\.png|\.css|\.js)$
+RewriteRule ^(.*)$ /wp-content/uploads/sites/10/$1 [L]
+
+#Look for php file based on root level url query
+RewriteCond %{HTTP_HOST} ^awesomestart\.com
+#List of all active pages
+RewriteCond %{REQUEST_URI} !/$
+RewriteCond %{REQUEST_URI} !/gallery
+RewriteCond %{REQUEST_URI} !/preferences
+RewriteCond %{REQUEST_URI} !/create
+RewriteCond %{REQUEST_URI} !/devlog
+RewriteCond %{REQUEST_URI} !/promote
+RewriteCond %{REQUEST_URI} !/staff
+RewriteCond %{REQUEST_URI} !/request
+RewriteCond %{REQUEST_URI} !/faq
+RewriteCond %{REQUEST_URI} !/tos
+RewriteCond %{REQUEST_URI} !/contact
+RewriteCond %{REQUEST_URI} !/design
+RewriteCond %{REQUEST_URI} !/public
+RewriteCond %{REQUEST_URI} !/public-404
+RewriteCond %{REQUEST_URI} !/report
+RewriteCond %{REQUEST_URI} !/s=
+RewriteCond %{REQUEST_URI} !/search
+RewriteCond %{REQUEST_URI} !(\.jpg|\.jpeg|\.gif|\.png|\.css|\.js)$
+RewriteRule ^(.*)$ /wp-content/uploads/sites/10/$1.php [L]
+
+RewriteRule ^index\.php$ - [L]
+
+# add a trailing slash to /wp-admin
+RewriteRule ^([_0-9a-zA-Z-]+/)?wp-admin$ $1wp-admin/ [R=301,L]
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+RewriteRule ^([_0-9a-zA-Z-]+/)?(wp-(content|admin|includes).*) $2 [L]
+RewriteRule ^([_0-9a-zA-Z-]+/)?(.*\.php)$ $2 [L]
+RewriteRule . index.php [L]
+
+
+# Wordfence WAF
+<Files ".user.ini">
+<IfModule mod_authz_core.c>
+        Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+</IfModule>
+</Files>
+
+# END Wordfence WAF
+# BEGIN W3TC Browser Cache
+<IfModule mod_deflate.c>
+        AddOutputFilterByType DEFLATE text/css text/x-component application/x-javascript application/javascript text/javascript text/x-js text/html text/richtext image/svg+xml text/plain text/xsd text/xsl text/xml image/bmp application/java application/msword application/vnd.ms-fontobject application/x-msdownload image/x-icon image/webp application/json application/vnd.ms-access application/vnd.ms-project application/x-font-otf application/vnd.ms-opentype application/vnd.oasis.opendocument.database application/vnd.oasis.opendocument.chart application/vnd.oasis.opendocument.formula application/vnd.oasis.opendocument.graphics application/vnd.oasis.opendocument.presentation application/vnd.oasis.opendocument.spreadsheet application/vnd.oasis.opendocument.text audio/ogg application/pdf application/vnd.ms-powerpoint image/svg+xml application/x-shockwave-flash image/tiff application/x-font-ttf application/vnd.ms-opentype audio/wav application/vnd.ms-write application/font-woff application/font-woff2 application/vnd.ms-excel
+    <IfModule mod_mime.c>
+        # DEFLATE by extension
+        AddOutputFilter DEFLATE js css htm html xml
+    </IfModule>
+</IfModule>
+<FilesMatch "\.(html|htm|rtf|rtx|svg|txt|xsd|xsl|xml|HTML|HTM|RTF|RTX|SVG|TXT|XSD|XSL|XML)$">
+    <IfModule mod_headers.c>
+        Header append Vary User-Agent env=!dont-vary
+    </IfModule>
+</FilesMatch>
+<FilesMatch "\.(bmp|class|doc|docx|eot|exe|ico|webp|json|mdb|mpp|otf|_otf|odb|odc|odf|odg|odp|ods|odt|ogg|pdf|pot|pps|ppt|pptx|svg|svgz|swf|tif|tiff|ttf|ttc|_ttf|wav|wri|woff|woff2|xla|xls|xlsx|xlt|xlw|BMP|CLASS|DOC|DOCX|EOT|EXE|ICO|WEBP|JSON|MDB|MPP|OTF|_OTF|ODB|ODC|ODF|ODG|ODP|ODS|ODT|OGG|PDF|POT|PPS|PPT|PPTX|SVG|SVGZ|SWF|TIF|TIFF|TTF|TTC|_TTF|WAV|WRI|WOFF|WOFF2|XLA|XLS|XLSX|XLT|XLW)$">
+    <IfModule mod_headers.c>
+         Header unset Last-Modified
+    </IfModule>
+</FilesMatch>
+# END W3TC Browser Cache

@@ -1,8 +1,4 @@
 <?php
-
-ini_set('display_errors',1);
-error_reporting(E_ALL & ~E_NOTICE);
-
 /**
  * The loop that displays a single post
  *
@@ -17,7 +13,12 @@ error_reporting(E_ALL & ~E_NOTICE);
  * @subpackage Twenty_Ten
  * @since Twenty Ten 1.2
  */
+
+// OPTIONS
+	// Show the author?
+	$author=false;
 ?>
+
 
 <?php
 	if ( have_posts() ) while ( have_posts() ) : the_post();
@@ -28,6 +29,10 @@ error_reporting(E_ALL & ~E_NOTICE);
 								</div><!-- #nav-above -->
 
 								<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+
+
+										<?php edit_post_link( __( 'Edit', 'twentyten' ), '<span class="edit-link">', '</span>' ); ?>
+
 										<h1 class="entry-title"><?php the_title(); ?></h1>
 
 										<div class="entry-meta">
@@ -49,31 +54,33 @@ error_reporting(E_ALL & ~E_NOTICE);
 												?>
 												<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); ?>
 												</div><!-- .entry-content -->
-
-<?php if ( get_the_author_meta( 'description' ) ) : // If a user has filled out their description, show a bio on their entries  ?>
-											<div id="entry-author-info">
-												<div id="author-avatar">
-													<?php
-														/** This filter is documented in author.php */
-														echo get_avatar( get_the_author_meta( 'user_email' ), apply_filters( 'twentyten_author_bio_avatar_size', 60 ) );
-													?>
-												</div><!-- #author-avatar -->
-												<div id="author-description">
-														<h2><?php printf( __( 'About %s', 'twentyten' ), get_the_author() ); ?></h2>
-														<?php the_author_meta( 'description' ); ?>
-														<div id="author-link">
-															<a href="<?php echo esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ); ?>" rel="author">
-																<?php printf( __( 'View all posts by %s <span class="meta-nav">&rarr;</span>', 'twentyten' ), get_the_author() ); ?>
-															</a>
-														</div><!-- #author-link -->
-												</div><!-- #author-description -->
-											</div><!-- #entry-author-info -->
-<?php endif; ?>
-
-										<div class="entry-utility">
-											<?php twentyten_posted_in(); ?>
-											<?php edit_post_link( __( 'Edit', 'twentyten' ), '<span class="edit-link">', '</span>' ); ?>
-										</div><!-- .entry-utility -->
+												<?php
+													function showAuthor(){
+														 // If a user has filled out their description, show a bio on their entries
+														if (get_the_author_meta('description')){
+															/** This filter is documented in author.php */
+															$theAvatar = get_avatar(get_the_author_meta('user_email'),apply_filters('twentyten_author_bio_avatar_size',60));
+															$theAuthor = get_the_author;
+															$theDesc = get_the_author_meta('description');
+															$theURL = esc_url(get_author_posts_url(get_the_author_meta('ID')));
+															$return = "
+																<div id='entry-author-info'>
+																	<div id='author-avatar'>$theAvatar</div>
+																	<div id='author-description'>
+																		<h2>About $theAuthor</h2>
+																		$theDescription
+																		<div id='author-link'>
+																			<a href='$theURL' rel='author'>View all posts by $theAuthor <span class='meta-nav'>&rarr;</span></a>
+																		</div>
+																	</div>
+																</div>";
+															return $return;
+														}
+													}
+													// Print out the author information
+													if($author){ echo showAuthor(); }
+												?>
+										<div class="entry-utility"><?php twentyten_posted_in(); ?></div>
 								</div><!-- #post-## -->
 
 								<div id="nav-below" class="navigation">

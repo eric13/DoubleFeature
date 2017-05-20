@@ -19,6 +19,239 @@
 	 * Requires wptouch/core/theme.php to demand include
 	 */
 
+	// Run jQuery for Free Download
+	//	if( !function_exists("run_scripts") ){
+	//
+	//		function run_scripts() {
+	//
+	//			// Script, location, list of script dependencies
+	//				wp_enqueue_script('jscript', get_stylesheet_directory_uri().'/jscript.js',array('jquery'));
+	//
+	//		}
+	//
+	//		add_action('wp_enqueue_scripts','run_scripts');
+	//
+	//	}
+
+	// Removes styles invokes by previous plugins
+	if( !function_exists("remove_default_stylesheet") ){
+
+		add_action( 'wp_enqueue_scripts', 'remove_default_stylesheet', 999 );
+
+		function remove_default_stylesheet() {
+
+			wp_dequeue_style('contact-form-7');
+			wp_deregister_style('wpdreams-asl-basic');
+			wp_dequeue_style('wpdreams-asl-basic');
+			wp_dequeue_style('wpdreams-ajaxsearchlite');
+			wp_deregister_style('wpdreams-gf-opensans');
+			wp_dequeue_style('wpdreams-gf-opensans');
+
+		}
+
+	}
+
+	// Purchase functions
+	if( !function_exists("hook_apple_pay") ){
+
+		// Hooked by WP to run store JS andfunctions during wp_footer
+		function hook_apple_pay() {
+
+			// Use only on the Store page
+			if( get_the_ID() == 10293 ){
+
+				$output="
+
+<script type='text/javascript' src='https://js.stripe.com/v2/'></script>
+<script type='text/javascript'>
+
+Stripe.setPublishableKey('pk_live_KRUHPzbRZhmwZ4mj7GuImk9b');
+Stripe.applePay.checkAvailability(function(available) {
+	if (available) {
+		document.getElementById('apple-pay-001').style.display = 'block';
+		document.getElementById('apple-pay-002').style.display = 'block';
+		document.getElementById('apple-pay-003').style.display = 'block';
+		document.getElementById('apple-pay-004').style.display = 'block';
+	}
+});
+
+document.getElementById('apple-pay-001').addEventListener('click', function() { beginApplePay(001); });
+document.getElementById('apple-pay-002').addEventListener('click', function() { beginApplePay(002); });
+document.getElementById('apple-pay-003').addEventListener('click', function() { beginApplePay(003); });
+document.getElementById('apple-pay-004').addEventListener('click', function() { beginApplePay(004); });
+
+function beginApplePay(item) {
+
+	var dfLabel, dfAmount;
+	var dfCom = '/delivery?id=';
+
+	switch(item) {
+		case 001:
+			dfLabel ='Double Feature: Additional Content Y6';
+			dfAmount = '9.99';
+			dfCom += '48151623';
+			break;
+		case 002:
+			dfLabel ='Double Feature: Additional Content Y7';
+			dfAmount = '9.99';
+			dfCom += '72218417';
+			break;
+		case 003:
+			dfLabel ='Double Feature: Additional Content Y8';
+			dfAmount = '9.99';
+			dfCom += '73627820';
+			break;
+		case 004:
+			dfLabel ='Double Feature: Additional Content Y9';
+			dfAmount = '9.99';
+			dfCom += '27577000';
+			break;
+	}
+
+	dfCom += '&ap=1';
+
+	var paymentRequest = {
+		countryCode: 'US',
+		currencyCode: 'USD',
+		total: {
+			label: dfLabel,
+			amount: dfAmount
+		}
+	};
+
+	var session = Stripe.applePay.buildSession(paymentRequest,function(result, completion) {
+
+		jQuery.post('https://doublefeature.fm/wp-content/plugins/double-feature/charge.php', { token: result.token.id }).done(function() {
+			completion(ApplePaySession.STATUS_SUCCESS);
+			window.location.href = dfCom;
+		}).fail(function() {
+			completion(ApplePaySession.STATUS_FAILURE);
+		});
+	}, function(error) { console.log(error.message); });
+
+	session.begin();
+}
+</script>
+
+				";
+					echo $output;
+				} else {
+				return false;
+			}
+
+		}
+
+		// Hook store function with wp_footer
+		add_action('wp_footer','hook_apple_pay');
+
+	}
+
+	// Free AC Redirect for Mobile
+	if( !function_exists("free_ac_mobile") ){
+
+		// Hooked by WP to run store JS andfunctions during wp_footer
+		function free_ac_mobile($content) {
+
+			// Use only on the Store page
+			if( get_the_ID() == 10354 ){
+
+				$userAgent = mobile_user_agent_switch();
+				if ($userAgent != 0) {
+					$return = "
+						<script type='text/javascript'>
+					if (document.getElementById('wptouch-search-inner')!=null) { window.location = 'https://doublefeature.fm/free-ac-episode?wptouch_switch=desktop'; }
+						</script>";
+				} else {
+					$return = "";
+				}
+
+				return $return.$content;
+
+			} else {
+				return $content;
+			}
+
+		}
+
+		// Add filter function to the hook
+		add_action('the_content', 'free_ac_mobile');
+
+	}
+
+	// Use custom variables
+	if( !function_exists("add_query_vars_filter") ) {
+		function add_query_vars_filter( $vars ){
+			$vars[] = "id";
+			$vars[] = "ap";
+			$vars[] = "charge";
+			return $vars;
+		}
+		add_filter('query_vars', 'add_query_vars_filter');
+	}
+
+	// Delivery page
+	if( !function_exists("deliverProduct") ){
+
+		function deliverProduct($content) {
+
+			if( get_the_ID() == 10186 ){
+
+				$id = get_query_var('id');
+				$ap = get_query_var('ap');
+				$charge = get_query_var('charge');
+				$default = "<script>window.location.href='/store';</script>There are no goods avalible for delivery. Items can be purchased from the Double Feature <a href=/store>store</a>.";
+				if ( (!empty($charge) || !empty($ap)) && !empty($id) ){
+					switch ($id){
+						case 48151623:
+							$item='Additional Content Y6';
+							$img='double-feature-additional-content-6';
+							$url='b4815162342-b8a';
+							$price = '9.99';
+							break;
+						case 72218417:
+							$item='Additional Content Y7';
+							$img='double-feature-additional-content-7';
+							$url='j7221ax8417-i6xt';
+							$price = '9.99';
+							break;
+						case 73627820:
+							$item='Additional Content Y8';
+							$img='double-feature-additional-content-8';
+							$url='_ety7362heuyw782';
+							$price = '9.99';
+							break;
+						case 27577000:
+							$item='Additional Content Y9';
+							$img='double-feature-additional-content-9';
+							$url='_kdu275cnthstw77';
+							$price = '9.99';
+							break;
+						default:
+							$return = $default;
+					}
+					if ( isset($ap) ) {
+						$return = "Congratulations. Your payment went through!<br><br>Here's what you purchased:<br>". $item . "<br>From: Double Feature<br><br><strong>Total Paid: $price USD</strong><br><br>";
+					}
+					$return .= "<div class='storePic'><img src='/images/$img.jpg' alt='$item' style='height: 100px; width: 100px;' /></div><div class='storeInfo'><strong>$item</strong><br>Format: Digital<br><strong>Save your URL:</strong><br><a href='/$url' target='_blank'>https://doublefeature.fm/$url</a></div><p>Above is the delivery link for your purchase. The files are DRM free and can be re-downloaded an unlimited number of time. Please save the URL so you can return in the future. Thanks again for supporting the show!</p>";
+				} else {
+
+					$return = $default;
+
+				}
+
+				return $content.$return;
+
+
+			} else {
+				return $content;
+			}
+		}
+
+		// Add filter function to the hook
+		add_action('the_content', 'deliverProduct');
+
+	}
+
 	// Clean certain characters from the title
 	if( !function_exists("cleanTitle")){
 		function cleanTitle($s) {
@@ -149,7 +382,7 @@
 				$episode = str_replace("%29", "", "$episode");
 
 				$tracking = "http://media.blubrry.com/doublefeature/";
-				$domain = "doublefeature.fm/media/";
+				$domain = "media.doublefeature.fm/";
 
 				$fn = the_title("", "", false);
 				$fn = explode(" + ", $fn);
@@ -160,37 +393,40 @@
 				if (in_array("year1", $nn)) {
 
 					// Year 1 episode on iTunes
-					$newContent = "<div id='podcastStore'><a href='https://itunes.apple.com/us/album/year-1/id1017126800' target='_blank'><img src='/images/coverart-year-1_small.jpg' /></a><div>".get_the_title()."<br /><a href='https://itunes.apple.com/us/album/year-1/id1017126800' target='_blank'>Available on iTunes</a><br />Double Feature | Year 1 (2009)</div></div>";
+					$newContent = "<div id='podcastStore'><a href='https://itunes.apple.com/album/year-1/id1017126800?app=itunes' target='_blank'><img src='/images/coverart-year-1_small.jpg' /></a><div>".get_the_title()."<br><a href='https://itunes.apple.com/album/year-1/id1017126800?app=itunes' target='_blank'>Available on iTunes</a><br>Double Feature | Year 1 (2009)</div></div>";
 
 				} else if (in_array("year2", $nn)) {
 
 					// Year 2 episode are offline
-					$newContent = "<div id='podcastStore'><img src='/images/coverart-year-1_small.jpg' style='opacity: .3' /><div>".get_the_title()."<br />Year 2 (2010)<br />Currently offliine. Coming Soon to iTunes!</div></div>";
+					$newContent = "<div id='podcastStore'><img src='/images/coverart-year-1_small.jpg' style='opacity: .3' /><div>".get_the_title()."<br>Year 2 (2010)<br>Currently offliine. Coming Soon to iTunes!</div></div>";
 
 				} else if (in_array("year3", $nn)) {
 
 					// Year 3 episode are offline
-					$newContent = "<div id='podcastStore'><img src='/images/coverart-year-1_small.jpg' style='opacity: .3' /><div>".get_the_title()."<br />Year 3 (2011)<br />Currently offliine. Coming Soon to iTunes!</div></div>";
+					$newContent = "<div id='podcastStore'><img src='/images/coverart-year-1_small.jpg' style='opacity: .3' /><div>".get_the_title()."<br>Year 3 (2011)<br>Currently offliine. Coming Soon to iTunes!</div></div>";
 
 				} else {
 
-					// If there's no specific itms number, use the generic one
+					// iTunes ID
 					$postID = get_the_ID();
-					$itms = "?i=".get_post_meta($postID, 'itms',true);
-					if (!$itms) { $itms = ""; }
+					// Get itms post metadata
+					$itmsEp = get_post_meta($postID,'itms',true);
+					// Set the itms link
+					$itms = "itms://itunes.apple.com/us/podcast/";
+					$itms .= (empty($itmsEp)) ?  "id285298251" : $episode."/id285298251?i=".$itmsEp;
 
 					// Create the full itms link
 					$itms = "itms://itunes.apple.com/us/podcast/".$episode."/id285298251".$itms;
 
 					// Create a simple 'tag' list which is actually from categories
 					$categories = get_the_category();
-					$separator = ' ';
+					$separator = '';
 					$output = '';
-					if ( ! empty( $categories ) ) {
-						foreach( $categories as $category ) {
-							$output .= '<a href="' . esc_url( get_category_link( $category->term_id ) ) . '" alt="' . esc_attr( sprintf( __( 'View all posts in %s', 'textdomain' ), $category->name ) ) . '">' . esc_html( $category->name ) . '</a>' . $separator ;
+					if ( !empty($categories) ) {
+						foreach($categories as $category) {
+							$output .= "<a href='".esc_url(get_category_link($category->term_id))."' class='a-cat'>".esc_html($category->name)."</a>";
 						}
-						$list_of_cats =  trim( $output, $separator );
+						$list_of_cats = trim($output,$separator);
 					}
 
 					$my_ex = get_the_content();
@@ -203,8 +439,8 @@
 					// Different output for different devices
 					if ($userAgent != 0) {
 						$newContent = "
-							<div class='playStream post-page-thumbnail'><a href='". $tracking . $domain . $episode .".m4a' rel='nofollow'><img src='/images/playStream.png' class='playStream post-thumbnail wp-post-image wp-post-image' alt='Play Episode'></a>
-							</div>";
+						<div class='playStream post-page-thumbnail'><a href='". $tracking . $domain . $episode .".m4a' rel='nofollow'><img src='/images/playStream.png' class='playStream post-thumbnail wp-post-image wp-post-image' alt='Play Episode'></a>
+						</div>";
 					} else {
 						$newContent = "";
 					}
@@ -212,52 +448,67 @@
 					switch ($userAgent){
 						case 1:
 							$newContent .= "
-								<div class='episodeActions'>
-									<a href='$itms' rel='nofollow' class='ep-button icon-podcast'>Open in Podcasts App</a>
-								</div>";
+							<div class='episodeActions'>
+							<a href='$itms' rel='nofollow' class='ep-button icon-podcast'>Open in Podcasts App</a>
+							</div>";
 							break;
 						case 4:
 							$newContent .= "
-								<div class='episodeActions'>
-									<a href='https://play.google.com/music/m/Ik2rgchlg6ki33p5euheh2mbayu?t=Double_Feature.m4a' rel='nofollow' class='ep-button icon-gp'>Podcast on Google Play</a>
-									<a href='". $tracking . $domain . $episode .".m4a' rel='nofollow' class='ep-button icon-stream'>Stream Episode</a>
-									<a href='". $tracking . $domain . $episode .".m4a' rel='nofollow' class='ep-button icon-dl'>Download Episode</a>
-									<a href='". $tracking . $domain . $episode .".m4a' rel='nofollow' class='ep-button icon-rss'>Subscribe</a>
-								</div>";
+							<div class='episodeActions'>
+							<a href='https://play.google.com/music/m/Ik2rgchlg6ki33p5euheh2mbayu?t=Double_Feature.m4a' rel='nofollow' class='ep-button icon-gp'>Podcast on Google Play</a>
+							<a href='". $tracking . $domain . $episode .".m4a' rel='nofollow' class='ep-button icon-stream'>Stream Episode</a>
+							<a href='". $tracking . $domain . $episode .".m4a' rel='nofollow' class='ep-button icon-dl'>Download Episode</a>
+							<a href='". $tracking . $domain . $episode .".m4a' rel='nofollow' class='ep-button icon-rss'>Subscribe</a>
+							</div>";
 							break;
 						case 5:
 						case 6:
 							$newContent .= "
-								<div class='episodeActions'>
-									<a href='". $tracking . $domain . $episode .".m4a' rel='nofollow' class='ep-button icon-stream'>Stream Episode</a>
-									<a href='". $tracking . $domain . $episode .".m4a' rel='nofollow' class='ep-button icon-dl'>Download Episode</a>
-									<a href='". $tracking . $domain . $episode .".m4a' rel='nofollow' class='ep-button icon-rss'>Subscribe</a>
-								</div>";
+							<div class='episodeActions'>
+							<a href='". $tracking . $domain . $episode .".m4a' rel='nofollow' class='ep-button icon-stream'>Stream Episode</a>
+							<a href='". $tracking . $domain . $episode .".m4a' rel='nofollow' class='ep-button icon-dl'>Download Episode</a>
+							<a href='". $tracking . $domain . $episode .".m4a' rel='nofollow' class='ep-button icon-rss'>Subscribe</a>
+							</div>";
 							break;
 						default:
-							$newContent .= "
-								<style type='text/css'>img.cvr { display: none; }</style>
-								<div style='float: left; display: inline-block;'><a href='/images/episodes/$episode.jpg' target='_blank' rel='lightbox'><img src='/images/episodes/small/sm_$episode.jpg' alt='". get_the_title() ."' class='cvr2'/></a></div>
-								<div style='float: right; width: 330px;'>Podcast: Double Feature<br>
-								<a href='$itms' rel='nofollow' class='ep-button icon-podcast'>Play in iTunes</a><a href='". $tracking . $domain . $episode .".m4a' rel='nofollow' class='ep-button icon-cloud'>Stream Episode</a><br>
-								$my_ex<br><br>
-								<span class='pod-date'>Posted $the_post_date</span><br>
-								Hosted by Eric Thirteen & Michael Koester<br>
-								Tags: $list_of_cats</div>
-								<h3>Episode Notes</h3>";
+
+							$newContent .= "<div style='float:left;display:inline-block;'>";
+
+							if (has_post_thumbnail()) {
+
+								// Set the featured image
+								$featuredImageArray = wp_get_attachment_image_src( get_post_thumbnail_id(),'full' );
+								$featuredImage = $featuredImageArray['0'];
+								$featuredImage = str_replace("wp-content/uploads/sites/8", "images", "$featuredImage");
+								// Set the featured image thumbnail
+								$featuredImageArray = wp_get_attachment_image_src( get_post_thumbnail_id(),'large' );
+								$featuredImageThumb = $featuredImageArray['0'];
+								$featuredImageThumb = str_replace("wp-content/uploads/sites/8", "images", "$featuredImageThumb");
+
+								$newContent .= "<a href='". $featuredImage ."' target='_blank' rel='lightbox'><img src='". $featuredImageThumb ."' alt='". get_the_title() ."' class='cvr2'/></a>";
+
+							}
+							$newContent .= "</div>
+							<div style='float: right; width: 330px;'>Podcast: Double Feature<br>
+							<a href='$itms' rel='nofollow' class='ep-button icon-podcast'>Play in iTunes</a><a href='". $tracking . $domain . $episode .".m4a' rel='nofollow' class='ep-button icon-cloud'>Stream Episode</a><br>
+							$my_ex<br><br>
+							<span class='pod-date'>Posted $the_post_date</span><br>
+							Hosted by Eric Thirteen & Michael Koester<br>
+						Tags:$list_of_cats</div>
+							<h3>Episode Notes</h3>";
 					}
 
 					if ($userAgent != 0) {
 						$newContent .= "$my_ex<br><br>
 						<span class='pod-date'>Posted $the_post_date</span><br>
-						Hosted by Eric Thirteen & Michael Koester<br>
+						Hosted by Eric Thirteen &amp; Michael Koester<br>
 						<div class='someTags'>Tags: $list_of_cats</div></div>";
 					}
 
 
 				}
 
-				if ( !in_array("finale", $nn) && $which=="bottom" ) {
+				if ( !in_array("finale", $nn) && in_array("podcast", $nn) && $which=="bottom" ) {
 
 					function gc($key, $echo = TRUE) {
 						global $post;
@@ -279,9 +530,8 @@
 						return $a;
 					}
 
-					function iTunesLinker($s) {
-						$s = str_replace("-", "", "$s");
-						$a = "https://itunes.com/movie/$s";
+					function iTunesLinker($s,$id="") {
+						$a = "https://geo.itunes.apple.com/us/movie/".$s."/id".$id."?mt=6&at=10ln87";
 						return $a;
 					}
 
@@ -339,10 +589,10 @@
 							$this->writers = $m['Writer'];
 							$this->director = $m['Director'];
 							$this->desc = $m['Plot'];
-							$this->release = date("F j, Y", strtotime($m[Released]));
+							$this->release = date("F j, Y", strtotime($m['Released']));
 							$this->short = cleanTitle($this->gctitle);
-							$this->cast = $m[Actors];
-							$this->runtime = $m[Runtime];
+							$this->cast = $m['Actors'];
+							$this->runtime = $m['Runtime'];
 
 							// Alright, if we didn't have the IMDB to begin with let's set it.
 							if (!$this->gcimdb) { $this->gcimdb = $m['imdbID']; }
@@ -351,9 +601,11 @@
 							// Annoying exception if the jpg filetype just didn't cut it
 							if ($this->short == "the-king-of-kong") { $this->ft = "png"; }
 
-							// Make Amazon and iTunes links if they weren't provided
-							if (!$this->amzn) { $this->amzn = amazonLinker($this->short); }
-							if (!$this->itns) { $this->itns = iTunesLinker($this->short); }
+							// Make Amazon if it wasn't provided
+							if (empty($this->amzn)) { $this->amzn = amazonLinker($this->short); }
+
+							// Make iTunes Link
+							$this->itns = (!empty($this->itns)) ? iTunesLinker($this->short,$this->itns) : NULL;
 
 						}
 
@@ -376,7 +628,7 @@
 
 					$bottomContent =
 					"<h3>Covers</h3>
-					Click on a cover to view/download high resolution version.<br /><br />";
+					Click on a cover to view/download high resolution version.<br><br>";
 
 					// Do a loop for each movie
 					$i=0; while ($i < count($mov)){
@@ -387,46 +639,65 @@
 						$url = killapaloozaFixer($mov[$i]->short);
 
 						// Create the moviebox
-						$bottomContent .=  "
-						<div id='movie-box-" . $whichbox . "'>
+						$bottomContent .=  "<div id='movie-box-" . $whichbox . "'>";
 
-						<a href='/images/covers/" .
-						$url . "." . $mov[$i]->ft . "' rel='lightbox'><img src='/images/covers/thumbnails/thumbnail-" .
-						$url . "." . $mov[$i]->ft . "' alt='" . $mov[$i]->gctitle . "' class='lbc' /></a>
+						if (!empty($url)){
+							$bottomContent .= "
+							<a href='/images/covers/" .
+							$url . "." . $mov[$i]->ft . "' rel='lightbox'><img src='/images/covers/thumbnails/thumbnail-" .
+							$url . "." . $mov[$i]->ft . "' alt='" . $mov[$i]->gctitle . "' class='lbc' /></a>
 
-						<h3>" . $mov[$i]->gctitle . "</h3>
+							<h3>" . $mov[$i]->gctitle . "</h3>";
 
-						<a href='" . $mov[$i]->itns . "' target='_blank' class='itns_btn' > </a>
-						<a href='" . $mov[$i]->amzn . "' target='_blank' class='amazn_btn' > </a>
+							if (!empty($mov[$i]->itns)) {
+								$bottomContent .= "<a href='" . $mov[$i]->itns . "' target='_blank' class='boxLink'><button class='store-button'><div class='store-itunes-button'></div></button></a>";
+							}
 
-						<br />";
+							$bottomContent .= "<a href='" . $mov[$i]->amzn . "' target='_blank' class='boxLink'><button class='store-button'><div class='store-amazon-button'></div></button></a>
+
+							<br>";
+						}
 
 						// Since empty release defaults to January 1, 1970, assume no runtime means no release
-						if ($mov[$i]->runtime != "") { $bottomContent .= "Released: " . $mov[$i]->release . "<br />Runtime: ". $mov[$i]->runtime . " | "; }
+						if ($mov[$i]->runtime != "") { $bottomContent .= "Released: " . $mov[$i]->release . "<br>Runtime: ". $mov[$i]->runtime . " | "; }
 
 						// Create IMDB and Wiki links
 						if (!in_array("killapalooza", $nn)) {
 							// Normal instance
-							$bottomContent .=  "
-							<a href='http://imdb.com/title/" . $mov[$i]->gcimdb . "' rel='nofollow' target='_blank'>IMDB</a> |
-							<a href='https://wikipedia.org/wiki/" . $mov[$i]->gcwiki . "' rel='nofollow' target='_blank'>Wikipedia</a><br /><br />";
+							if (!empty($mov[$i]->gcimdb)) {
+								$bottomContent .=  "
+								<a href='http://imdb.com/title/" . $mov[$i]->gcimdb . "' rel='nofollow' target='_blank'>IMDB</a>";
+							}
+							if (!empty($mov[$i]->gcimdb) && !empty($mov[$i]->gcwiki)) {
+								$bottomContent .= " | ";
+							}
+							if (!empty($mov[$i]->gcwiki)) {
+								$bottomContent .= "
+								<a href='https://wikipedia.org/wiki/" . $mov[$i]->gcwiki . "' rel='nofollow' target='_blank'>Wikipedia</a>";
+							}
+							if (!empty($mov[$i]->gcimdb) || !empty($mov[$i]->gcwiki)) {
+								$bottomContent .= "<br><br>";
+							}
 						} else {
 							// Killapalooza instance
 							$franchise = the_title("", "", false);
-							$franchise = explode(": ", $franchise);
-							$franchise = $franchise[1];
-							$bottomContent .= "
-							<a href='http://imdb.com/find?q=" . str_replace(" ","+", $franchise) . "&s=tt&ttype=ft' rel='nofollow' target='_blank'>IMDB</a> |
-							<a href='https://wikipedia.org/wiki/" . str_replace(" ","_", $franchise) . "_(franchise)' rel='nofollow' target='_blank'>Wikipedia</a>";
+							// If there actually is one!
+							if (!empty($franchise)) {
+								$franchise = explode(": ", $franchise);
+								$franchise = $franchise[1];
+								$bottomContent .= "
+								<a href='http://imdb.com/find?q=" . str_replace(" ","+", $franchise) . "&s=tt&ttype=ft' rel='nofollow' target='_blank'>IMDB</a> |
+								<a href='https://wikipedia.org/wiki/" . str_replace(" ","_", $franchise) . "_(franchise)' rel='nofollow' target='_blank'>Wikipedia</a>";
+							}
 						}
 
 						// Generate director links
 						$director = $mov[$i]->dlnk();
 
-						if ($mov[$i]->director != "") { $bottomContent .= "Director: " . $mov[$i]->dlnk() . "<br />"; }
-						if ($mov[$i]->writers != "") { $bottomContent .= "Writer: " . $mov[$i]->writers . "<br />"; }
-						if ($mov[$i]->cast != "") { $bottomContent .= "Starring: " . $mov[$i]->cast . "<br /><br />"; }
-						if ($mov[$i]->desc != "") { $bottomContent .= $mov[$i]->desc . "<br /><br />";}
+						if ($mov[$i]->director != "") { $bottomContent .= "Director: " . $mov[$i]->dlnk() . "<br>"; }
+						if ($mov[$i]->writers != "") { $bottomContent .= "Writer: " . $mov[$i]->writers . "<br>"; }
+						if ($mov[$i]->cast != "") { $bottomContent .= "Starring: " . $mov[$i]->cast . "<br><br>"; }
+						if ($mov[$i]->desc != "") { $bottomContent .= $mov[$i]->desc . "<br><br>";}
 
 						$bottomContent .= "</div>";
 
@@ -450,12 +721,13 @@
 
 	}
 
-	//  Creat the A-Z list or Gallery List
+	//  Create the A-Z list or Gallery List
 	if( !function_exists("dfGalleryGenerator")){
 
+		// Hooked by WP to run gallery code during the_content
 		function dfGalleryGenerator($content){
-			// Use only on the Gallery page
 
+			// Use only on the Gallery page
 			if( get_the_ID() == 1774 || get_the_ID() == 662 ){
 
 				// Clean up a title type string
@@ -532,50 +804,51 @@
 				sort($array);
 
 				for ($i = 0; $i < (count($ars)*2); $i++){
+					// Exceptions that don't have gallery images
 					if ($array[$i][1] != $array[$i-1][1]
 						&& substr($array[$i][1], 0, 18) != "Music Box Massacre"
 						&& substr($array[$i][1], 0, 15) != "Double Feature ") {
-
+						
 						// Show images on Gallery page
 						if( get_the_ID() == 1774){
-
+							
 							$eurl = $array[$i][3];
 							$eurl = strtolower($eurl);
 							$eurl = cleanTitle($eurl);
-
+							
 							// Add extension
 							if ($eurl == "the-king-of-kong") {
 								$eurl .= ".png";
 							} else {
 								$eurl .= ".jpg";
 							}
-
+							
 							// Correct Killapalooza Links
 							$eurl = killapaloozaFixer($eurl);
-
+							
 							$return .= "<a href=". $array[$i][2] ."><img src=/images/covers/tiny/tiny-$eurl alt=\"" . $array[$i][1] . "\"  class='galThumb' align='left' /></a>";
-
+							
 							// Show text links on Gallery (List) page
 						} else {
-
-							$return .= "<a href=". $array[$i][2] .">".$array[$i][1]."</a><br />";
-
+							
+							$return .= "<a href=". $array[$i][2] .">".$array[$i][1]."</a><br>";
+							
 						}
 					}
 				}
-
+				
 				$return .= '<div style="clear: both;"">&nbsp;</div>';
-
+				
 				return $content . $return;
-
+				
 			} else {
 				return $content;
 			}
-
+			
 		}
-
+		
 		// Add filter function to the hook
-		add_filter('the_content', 'dfGalleryGenerator');
+		add_action('the_content', 'dfGalleryGenerator');
 	}
 
 ?>
