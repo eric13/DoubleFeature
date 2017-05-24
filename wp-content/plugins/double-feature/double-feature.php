@@ -1609,7 +1609,7 @@ function funct_showmemberpage() {
 	}
 	// Returns
 	if ($level){
-		return runThe($jewels);
+		return runThe($jewels)."<h3 style='margin-top:50px'>Settings</h3><a href=/members/profile>Go to Profile</a>";
 	} else {
 		// Using shortcode version so on-page style is included
 		return funct_showloginwindow();
