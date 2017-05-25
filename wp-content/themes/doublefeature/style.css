@@ -2253,10 +2253,10 @@ input.swpm-text-field  {
 .memThumb img:hover {
 	border:4px solid #46D;
 }
-.memThumb .disable {
-	opacity: .6;
+div.memThumb.disabled {
+	opacity: .3;
 }
-.memThumb .disabled img:hover {
+div.memThumb.disabled img:hover {
 	border:4px solid transparent;
 	cursor: initial;
 }
@@ -2269,7 +2269,19 @@ input.swpm-text-field  {
 .memThumb p {
 	display: none;
 }
-.swpm-pw-reset-submit {
+input#first_name,input#last_name {
+	width: 60%;
+}
+.swpm-edit-profile-form table {
+	border:none;
+}
+.swpm-profile-email-row td {
+	border-top: none;
+}
+.swpm-profile-username-row {
+	display:none;
+}
+.swpm-pw-reset-submit, .swpm-edit-profile-submit {
 	display: inline-block;
 	text-align: center;
 	cursor: pointer;
