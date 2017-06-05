@@ -1,6 +1,5 @@
 These files need to be modified when updating Ajax Search Lite.
 
-
 EDIT LIST
 
 class-asl-search.php 		Line 80

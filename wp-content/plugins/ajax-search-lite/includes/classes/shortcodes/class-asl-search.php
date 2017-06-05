@@ -1,118 +1,74 @@
 <?php
-if (!defined('ABSPATH')) die('-1');
+	if (!defined('ABSPATH')) die('-1');
 
-if (!class_exists("WD_ASL_Search_Shortcode")) {
-    /**
-     * Class WD_ASL_Search_Shortcode
-     *
-     * Search bar shortcode
-     *
-     * @class         WD_ASL_Search_Shortcode
-     * @version       1.0
-     * @package       AjaxSearchLite/Classes/Shortcodes
-     * @category      Class
-     * @author        Ernest Marcinko
-     */
-    class WD_ASL_Search_Shortcode extends WD_ASL_Shortcode_Abstract {
+	// [Shortcode] Search bar
+	if (!class_exists("WD_ASL_Search_Shortcode")) {
 
-        /**
-         * Overall instance count
-         *
-         * @var int
-         */
-        private static $instanceCount = 0;
+		class WD_ASL_Search_Shortcode extends WD_ASL_Shortcode_Abstract {
 
-        /**
-         * Used in views, true if the data view is printed
-         *
-         * @var bool
-         */
-        private static $dataPrinted = false;
+			// Overall instance count (@var int)
+			private static $instanceCount = 0;
 
-        /**
-         * Instance count per search ID
-         *
-         * @var array
-         */
-        private static $perInstanceCount = array();
+			// Used in views, true if data view is printed
+			private static $dataPrinted = false;
 
-        /**
-         * Does the search shortcode stuff
-         *
-         * @param array|null $atts
-         * @return string|void
-         */
-        public function handle($atts) {
-            $style = null;
-            self::$instanceCount++;
+			// Instance count per search ID (@var array)
+			private static $perInstanceCount = array();
 
-            extract(shortcode_atts(array(
-                'id' => 'something'
-            ), $atts));
+			// Performs shortcode functionalisty (@param array|null $atts) @return string|void
+			public function handle($atts) {
+				$style = null;
+				self::$instanceCount++;
 
-            $inst = wd_asl()->instances->get(0);
-            $style = $inst['data'];
+				extract(shortcode_atts(array(
+					'id' => 'something'
+				), $atts));
 
-            // Set the "_fo" item to indicate that the non-ajax search was made via this form, and save the options there
-            if (isset($_POST['p_asl_data']) || isset($_POST['np_asl_data'])) {
-                $_p_data = isset($_POST['p_asl_data']) ? $_POST['p_asl_data'] : $_POST['np_asl_data'];
-                parse_str($_p_data, $style['_fo']);
-            }
+				$inst = wd_asl()->instances->get(0);
+				$style = $inst['data'];
 
-            $settingsHidden = ((
-                w_isset_def($style['show_frontend_search_settings'], 1) == 1
-            ) ? false : true);
+				// Set the "_fo" item to indicate that the non-ajax search was made via this form, and save the options there
+				if (isset($_POST['p_asl_data']) || isset($_POST['np_asl_data'])) {
+					$_p_data = isset($_POST['p_asl_data']) ? $_POST['p_asl_data'] : $_POST['np_asl_data'];
+					parse_str($_p_data, $style['_fo']);
+				}
 
-            do_action('asl_layout_before_shortcode', $id);
+				$settingsHidden = ((
+					w_isset_def($style['show_frontend_search_settings'], 1) == 1
+				) ? false : true);
 
-            $out = "";
-            ob_start();
-            include(ASL_PATH."includes/views/asl.shortcode.php");
-            $out = ob_get_clean();
+				do_action('asl_layout_before_shortcode', $id);
 
-            do_action('asl_layout_after_shortcode', $id);
+				$out = "";
+				ob_start();
+				include(ASL_PATH."includes/views/asl.shortcode.php");
+				$out = ob_get_clean();
 
-            return $out;
-        }
+				do_action('asl_layout_after_shortcode', $id);
 
-        /**
-         * Importing fonts does not work correctly it appears.
-         * Instead adding the links directly to the header is the best way to go.
-         */
+				return $out;
+			}
 
+			// Importing fonts does not work correctly it appears. Instead adding the links directly to the header is the best way to go.
+			// EDIT: Do not do this. -Eric
 
+			public function fonts() {
+				$imports = array('https://fonts.googleapis.com/css?family=Open+Sans');
+				$imports = apply_filters('asl_custom_fonts', $imports);
 
+				foreach ($imports as $import) {
+					$import = trim(str_replace(array("@import url(", ");", "https:", "http:"), "", $import));
+					// echo "<link href='" . $import . "' rel='stylesheet' type='text/css'>";
+				}
+			}
 
-
-		/* EDIT: Do not do this. -Eric */
-
-        public function fonts() {
-            $imports = array(
-                'https://fonts.googleapis.com/css?family=Open+Sans'
-            );
-
-            $imports = apply_filters('asl_custom_fonts', $imports);
-
-            foreach ($imports as $import) {
-                $import = trim(str_replace(array("@import url(", ");", "https:", "http:"), "", $import));
-// echo "<link href='" . $import . "' rel='stylesheet' type='text/css'>";
-            }
-        }
-
-
-
-
-
-
-        // ------------------------------------------------------------
-        //   ---------------- SINGLETON SPECIFIC --------------------
-        // ------------------------------------------------------------
-        public static function getInstance() {
-            if ( ! ( self::$_instance instanceof self ) ) {
-                self::$_instance = new self();
-            }
-
-            return self::$_instance;
-        }
-    }
-}
+			// Singleton specific
+			public static function getInstance() {
+				if ( ! ( self::$_instance instanceof self ) ) {
+					self::$_instance = new self();
+				}
+				return self::$_instance;
+			}
+		}
+	}
+?>

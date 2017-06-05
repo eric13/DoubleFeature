@@ -10,28 +10,34 @@
  */
 
 /**
- * wp-content/plugins/double-feature-scripts/double-feature-scripts.php
- *
- * The cleanest version of the Double Feature script, currently in use as
- * its own plugin and in the Double Feature theme. Optimized for mobile,
- * but would be a good idea to consolidate these three scripts.
+ * Previously the Double Feature Plugin, now folded into the Double Feature theme.
+ * Optimized for mobile,but would be a good idea to consolidate this and wptouch scripts.
  *
  * Requires wptouch/core/theme.php to demand include
  */
 
 // Run jQuery for Free Download
-//	if( !function_exists("run_scripts") ){
-//		function run_scripts() {
-//			// Script, location, list of script dependencies
-//				wp_enqueue_script('jscript', get_stylesheet_directory_uri().'/jscript.js',array('jquery'));
-//		}
-//		add_action('wp_enqueue_scripts','run_scripts');
-//	}
+if( !function_exists("run_scripts") ){
+    function run_scripts() {
+        
+        // Script, location, list of script dependencies
+        wp_register_script('jscript', get_theme_root_uri().'/doublefeature/jscript.js', array('jquery'));
+        wp_enqueue_script('jscript');
+        
+    } add_action('wp_enqueue_scripts','run_scripts');
+}
+
+if( !function_exists("set_viewport") ){
+	function set_viewport() {
+
+		echo "<meta name='viewport' content='width=device-width'>";
+
+	}
+	add_action('wp_head', 'set_viewport');
+}
 
 // Removes styles invoked by previous plugins
 if( !function_exists("remove_default_stylesheet") ){
-
-	add_action( 'wp_enqueue_scripts', 'remove_default_stylesheet', 999 );
 
 	function remove_default_stylesheet() {
 
@@ -42,7 +48,7 @@ if( !function_exists("remove_default_stylesheet") ){
 		wp_deregister_style('wpdreams-gf-opensans');
 		wp_dequeue_style('wpdreams-gf-opensans');
 
-	}
+	} add_action( 'wp_enqueue_scripts', 'remove_default_stylesheet', 999 );
 
 }
 
@@ -116,7 +122,7 @@ var paymentRequest = {
 
 var session = Stripe.applePay.buildSession(paymentRequest,function(result, completion) {
 
-	jQuery.post('https://doublefeature.fm/wp-content/plugins/double-feature/charge.php', { token: result.token.id }).done(function() {
+	jQuery.post('https://doublefeature.fm/wp-content/themes/doublefeature/charge.php', { token: result.token.id }).done(function() {
 		completion(ApplePaySession.STATUS_SUCCESS);
 		window.location.href = dfCom;
 	}).fail(function() {
@@ -182,6 +188,13 @@ if( !function_exists("add_query_vars_filter") ) {
 		return $vars;
 	}
 	add_filter('query_vars', 'add_query_vars_filter');
+}
+
+// Change all that wp-content stuff to "images" which will redirect form htaccess
+if( !function_exists("urlImager") ) {
+	function urlImager($img){
+		return str_replace("wp-content/uploads/sites/8", "images", "$img");
+	}
 }
 
 // Delivery page
@@ -287,7 +300,7 @@ if( !function_exists("killapaloozaFixer")){
 }
 
 // Detects Mobile type. Redundant with a wptouch function, clean this up
-if( !function_exists('mobile_user_agent_switch') ){
+if( !function_exists("mobile_user_agent_switch") ){
 	function mobile_user_agent_switch($type="os") {
 		$device = 0;
 
@@ -431,14 +444,24 @@ if( !function_exists("dfEpA")){
 
 				$userAgent = mobile_user_agent_switch();
 
-				// Different output for different devices
-				if ($userAgent != 0) {
-					$newContent = "
-					<div class='playStream post-page-thumbnail'><a href='". $tracking . $domain . $episode .".m4a' rel='nofollow'><img src='/images/playStream.png' class='playStream post-thumbnail wp-post-image wp-post-image' alt='Play Episode'></a>
-					</div>";
-				} else {
-					$newContent = "";
+				// Start the podcast block content
+				$newContent .= "<div style='float:left;display:inline-block;'>";
+
+				if (has_post_thumbnail()) {
+
+					// Set the featured image
+					$featuredImageArray = wp_get_attachment_image_src( get_post_thumbnail_id(),'full' );
+					$featuredImage = $featuredImageArray['0'];
+					$featuredImage = urlImager("$featuredImage");
+					// Set the featured image thumbnail
+					$featuredImageArray = wp_get_attachment_image_src( get_post_thumbnail_id(),'large' );
+					$featuredImageThumb = $featuredImageArray['0'];
+					$featuredImageThumb = urlImager($featuredImageThumb);
+
+					$newContent .= "<a href='". $featuredImage ."' target='_blank' rel='lightbox'><img src='". $featuredImageThumb ."' alt='". get_the_title() ."' class='cvr2'/></a>";
+
 				}
+				$newContent .= "</div>";
 
 				switch ($userAgent){
 					case 1:
@@ -467,23 +490,7 @@ if( !function_exists("dfEpA")){
 						break;
 					default:
 
-						$newContent .= "<div style='float:left;display:inline-block;'>";
-
-						if (has_post_thumbnail()) {
-
-							// Set the featured image
-							$featuredImageArray = wp_get_attachment_image_src( get_post_thumbnail_id(),'full' );
-							$featuredImage = $featuredImageArray['0'];
-							$featuredImage = str_replace("wp-content/uploads/sites/8", "images", "$featuredImage");
-							// Set the featured image thumbnail
-							$featuredImageArray = wp_get_attachment_image_src( get_post_thumbnail_id(),'large' );
-							$featuredImageThumb = $featuredImageArray['0'];
-							$featuredImageThumb = str_replace("wp-content/uploads/sites/8", "images", "$featuredImageThumb");
-
-							$newContent .= "<a href='". $featuredImage ."' target='_blank' rel='lightbox'><img src='". $featuredImageThumb ."' alt='". get_the_title() ."' class='cvr2'/></a>";
-
-						}
-						$newContent .= "</div>
+						$newContent .= "
 						<div style='float: right; width: 330px;'>Podcast: Double Feature<br>
 						<a href='$itms' rel='nofollow' class='ep-button icon-podcast'>Play in iTunes</a><a href='". $tracking . $domain . $episode .".m4a' rel='nofollow' class='ep-button icon-cloud'>Stream Episode</a><br>
 						$my_ex<br><br>
@@ -561,36 +568,53 @@ if( !function_exists("dfEpA")){
 							$this->gcwiki = get_post_meta($postID, 'wiki1',true);
 							$this->amzn = get_post_meta($postID, 'amzn1',true);
 							$this->itns = get_post_meta($postID, 'itns1',true);
+							$this->writers = get_post_meta($postID, 'write1',true);
+							$this->director = get_post_meta($postID, 'dire1',true);
+							$this->release = get_post_meta($postID, 'rele1',true);
+							$this->cast = get_post_meta($postID, 'cast1',true);
+							$this->desc = get_post_meta($postID, 'desc1',true);
 						} else {
 							$this->gcimdb = get_post_meta($postID, 'imdb2',true);
 							$this->gcwiki = get_post_meta($postID, 'wiki2',true);
 							$this->amzn = get_post_meta($postID, 'amzn2',true);
 							$this->itns = get_post_meta($postID, 'itns2',true);
+							$this->writers = get_post_meta($postID, 'write2',true);
+							$this->director = get_post_meta($postID, 'dire2',true);
+							$this->release = get_post_meta($postID, 'rele2',true);
+							$this->cast = get_post_meta($postID, 'cast2',true);
+							$this->desc = get_post_meta($postID, 'desc2',true);
 						}
 
-						// Query a third party IMDB API which retrieves a JSON
-						if ($this->gcimdb) {
-							$q = file_get_contents("http://www.omdbapi.com/?i=$this->gcimdb");
-						} else {
-							// Don't have an IMDB? Let's try looking it up by title
-							$srchr = str_replace(" ", "%20", $this->gctitle);
-							$srchr = str_replace("’", "", $srchr);
-							$q = file_get_contents("http://www.omdbapi.com/?t=$srchr");
-							// The search returns the json with brackets, even with only one result.  Remove the brackets.
-						}
-						$m = json_decode($q, true);
+						// If the entry didn't finish getting filled out, try using an API for lookup
+//						if ( empty($this->gcimdb) || empty($this->writers) || empty($this->director) || empty($this->cast) ||  empty($this->desc) ){
 
-						// Prep other attributes
-						$this->writers = $m['Writer'];
-						$this->director = $m['Director'];
-						$this->desc = $m['Plot'];
-						$this->release = date("F j, Y", strtotime($m['Released']));
+							// Query a third party IMDB API which retrieves a JSON
+//							if ($this->gcimdb) {
+//								$q = file_get_contents("http://www.omdbapi.com/?i=$this->gcimdb");
+//							} else {
+								// Don't have an IMDB? Let's try looking it up by title
+//								$srchr = str_replace(" ", "%20", $this->gctitle);
+//								$srchr = str_replace("’", "", $srchr);
+//								$q = file_get_contents("http://www.omdbapi.com/?t=$srchr");
+								// The search returns the json with brackets, even with only one result.  Remove the brackets.
+//							}
+//							$m = json_decode($q, true);
+
+							// Prep other attributes
+//							$this->writers = $m['Writer'];
+//							$this->director = $m['Director'];
+//							$this->desc = $m['Plot'];
+//							$this->release = date("F j, Y", strtotime($m['Released']));
+//							$this->cast = $m['Actors'];
+//							$this->runtime = $m['Runtime'];
+
+							// Alright, if we didn't have the IMDB to begin with let's set it.
+//							if (!$this->gcimdb) { $this->gcimdb = $m['imdbID']; }
+
+//						}
+
 						$this->short = cleanTitle($this->gctitle);
-						$this->cast = $m['Actors'];
-						$this->runtime = $m['Runtime'];
 
-						// Alright, if we didn't have the IMDB to begin with let's set it.
-						if (!$this->gcimdb) { $this->gcimdb = $m['imdbID']; }
 						if (!$this->gcwiki) { $this->gcwiki = str_replace("-", "_", $this->short); }
 
 						// Annoying exception if the jpg filetype just didn't cut it
@@ -805,7 +829,7 @@ function funct_showloginwindow() {
 	// If used as a shotcode, needs some style tweaks
 	$return = "
 		<style>
-			#content .entry-title{
+			#content .entry-title {
 				display:none;
 			}
 			#content #memberBox {
@@ -827,6 +851,14 @@ function funct_showloginwindow() {
 	$return .= createLoginBox();
 	return $return;
 } add_shortcode('showloginwindow','funct_showloginwindow');
+    
+// Shortcode [twitter (status,date,status,text) user,at,type]
+function funct_twitter($atts) {
+    $t = shortcode_atts(array('status'=>'','date'=>'','user'=>'Eric Thirteen','at'=>'eric_x13','type'=>'tweet'),$atts,'twitter' );
+    if ($t['type'] != 'video') { $t['type']='tweet'; }
+	$return = "<blockquote class='twitter-". $t['type'] ."' data-lang='en'><p lang='en' dir='ltr'>". $t['text'] ."</p>&mdash; ". $t['user'] ." (@". $t['at'] .") <a href='https://twitter.com/". $t['at'] ."/status/". $t['status'] ."'>". $t['date'] ."</a></blockquote> <script async src='//platform.twitter.com/widgets.js' charset='utf-8'></script>";
+	return $return;
+} add_shortcode('twitter','funct_twitter');
 
 // Shortcode [showgallery (view=az)]
 function funct_showgallery($atts){
@@ -1107,6 +1139,7 @@ function funct_showmemberpage() {
 				array('AC7',0),
 				array('AC8',0),
 				array('AC9',0),
+				array('AC10',0),
 				array('themes-and-commentary',0)
 			];
 			break;
@@ -1128,6 +1161,7 @@ function funct_showmemberpage() {
 				array('AC7'),
 				array('AC8'),
 				array('_kdu275cnthstw77'),
+				array('AC10',0),
 				array('<h3>More Access</h3>'),
 				array('extra-bonuses'),
 				array('themes-and-commentary')
@@ -1151,6 +1185,7 @@ function funct_showmemberpage() {
 				array('AC7'),
 				array('AC8'),
 				array('_kdu275cnthstw77'),
+				array('AC10',0),
 				array('<h3>More Access</h3>'),
 				array('extra-bonuses'),
 				array('themes-and-commentary',0)
@@ -1174,6 +1209,7 @@ function funct_showmemberpage() {
 				array('AC7'),
 				array('AC8'),
 				array('_kdu275cnthstw77'),
+				array('AC10',0),
 				array('<h3>More Access</h3>'),
 				array('extra-bonuses'),
 				array('themes-and-commentary',0)
@@ -1188,6 +1224,7 @@ function funct_showmemberpage() {
 				array('AC7'),
 				array('AC8'),
 				array('_kdu275cnthstw77'),
+				array('AC10',0),
 				array('<h3>Full Library</h3>'),
 				array('Y1',0),
 				array('Y2',0),
@@ -1212,6 +1249,7 @@ function funct_showmemberpage() {
 				array('AC7'),
 				array('AC8'),
 				array('_kdu275cnthstw77'),
+				array('AC10',0),
 				array('<h3>Full Library</h3>'),
 				array('Y1',0),
 				array('Y2',0),
@@ -1236,6 +1274,7 @@ function funct_showmemberpage() {
 				array('AC7',0),
 				array('AC8'),
 				array('_kdu275cnthstw77'),
+				array('AC10',0),
 				array('<h3>Full Library</h3>'),
 				array('Y1',0),
 				array('Y2',0),
@@ -1260,6 +1299,7 @@ function funct_showmemberpage() {
 				array('AC7',0),
 				array('AC8'),
 				array('_kdu275cnthstw77'),
+				array('AC10',0),
 				array('<h3>Full Library</h3>'),
 				array('Y1',0),
 				array('Y2',0),
@@ -1284,6 +1324,7 @@ function funct_showmemberpage() {
 				array('AC7',0),
 				array('AC8',0),
 				array('_kdu275cnthstw77'),
+				array('AC10',0),
 				array('<h3>Full Library</h3>'),
 				array('Y1',0),
 				array('Y2',0),
@@ -1308,6 +1349,7 @@ function funct_showmemberpage() {
 				array('AC7',0),
 				array('AC8',0),
 				array('_kdu275cnthstw77'),
+				array('AC10',0),
 				array('<h3>Full Library</h3>'),
 				array('Y1',0),
 				array('Y2',0),
@@ -1341,6 +1383,7 @@ function funct_showmemberpage() {
 				array('AC7'),
 				array('AC8'),
 				array('_kdu275cnthstw77',0),
+				array('AC10',0),
 				array('<h3>More Access</h3>'),
 				array('extra-bonuses'),
 				array('themes-and-commentary',0)
@@ -1355,6 +1398,7 @@ function funct_showmemberpage() {
 				array('AC7'),
 				array('AC8'),
 				array('_kdu275cnthstw77',0),
+				array('AC10',0),
 				array('<h3>Full Library</h3>'),
 				array('Y1'),
 				array('Y2',0),
@@ -1379,6 +1423,7 @@ function funct_showmemberpage() {
 				array('AC7'),
 				array('AC8'),
 				array('_kdu275cnthstw77',0),
+				array('AC10',0),
 				array('<h3>Full Library</h3>'),
 				array('Y1',0),
 				array('Y2',0),
@@ -1403,6 +1448,7 @@ function funct_showmemberpage() {
 				array('AC7'),
 				array('AC8'),
 				array('_kdu275cnthstw77',0),
+				array('AC10',0),
 				array('<h3>Full Library</h3>'),
 				array('Y1',0),
 				array('Y2',0),
@@ -1427,6 +1473,7 @@ function funct_showmemberpage() {
 				array('AC7',0),
 				array('AC8'),
 				array('_kdu275cnthstw77',0),
+				array('AC10',0),
 				array('<h3>Full Library</h3>'),
 				array('Y1',0),
 				array('Y2',0),
@@ -1460,6 +1507,7 @@ function funct_showmemberpage() {
 				array('AC7',0),
 				array('AC8'),
 				array('_kdu275cnthstw77',0),
+				array('AC10',0),
 				array('<h3>More Access</h3>'),
 				array('extra-bonuses'),
 				array('themes-and-commentary',0)
@@ -1474,6 +1522,7 @@ function funct_showmemberpage() {
 				array('AC7',0),
 				array('AC8'),
 				array('_kdu275cnthstw77',0),
+				array('AC10',0),
 				array('<h3>Full Library</h3>'),
 				array('Y1',0),
 				array('Y2',0),
@@ -1498,6 +1547,7 @@ function funct_showmemberpage() {
 				array('AC7'),
 				array('AC8',0),
 				array('_kdu275cnthstw77',0),
+				array('AC10',0),
 				array('<h3>Full Library</h3>'),
 				array('Y1',0),
 				array('Y2',0),
@@ -1522,6 +1572,7 @@ function funct_showmemberpage() {
 				array('AC7'),
 				array('AC8',0),
 				array('_kdu275cnthstw77',0),
+				array('AC10',0),
 				array('<h3>Full Library</h3>'),
 				array('Y1',0),
 				array('Y2',0),
@@ -1546,6 +1597,7 @@ function funct_showmemberpage() {
 				array('AC7',0),
 				array('AC8',0),
 				array('_kdu275cnthstw77',0),
+				array('AC10',0),
 				array('<h3>Full Library</h3>'),
 				array('Y1'),
 				array('Y2',0),
@@ -1570,6 +1622,7 @@ function funct_showmemberpage() {
 				array('AC7',0),
 				array('AC8',0),
 				array('_kdu275cnthstw77',0),
+				array('AC10',0),
 				array('<h3>Full Library</h3>'),
 				array('Y1',0),
 				array('Y2',0),
@@ -1602,6 +1655,7 @@ function funct_showmemberpage() {
 				array('AC7',0),
 				array('AC8',0),
 				array('_kdu275cnthstw77',0),
+				array('AC10',0),
 				array('<h3>More Access</h3>'),
 				array('extra-bonuses'),
 				array('themes-and-commentary',0)
@@ -1624,7 +1678,31 @@ function funct_showmemberpage() {
 				array('AC6',0),
 				array('AC7',0),
 				array('AC8',0),
-				array('_kdu275cnthstw77'),
+				array('_kdu275cnthstw77',0),
+				array('AC10',0),
+				array('<h3>More Access</h3>'),
+				array('extra-bonuses'),
+				array('themes-and-commentary',0)
+			];
+			break;
+		case 30:
+			// Subscriber+Y7+Y6
+			$jewels = [
+				array('Y1'),
+				array('Y2'),
+				array('Y3'),
+				array('Y4'),
+				array('Y5'),
+				array('Y6'),
+				array('Y7'),
+				array('Y8'),
+				array('Y9'),
+				array('<h3>Additional Content</h3>'),
+				array('AC6'),
+				array('AC7'),
+				array('AC8',0),
+				array('_kdu275cnthstw77',0),
+				array('AC10',0),
 				array('<h3>More Access</h3>'),
 				array('extra-bonuses'),
 				array('themes-and-commentary',0)

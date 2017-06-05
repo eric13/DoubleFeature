@@ -891,7 +891,7 @@ div[id*='ajaxsearchlite'] .mCSB_scrollTools .mCSB_buttonRight:active {
 /* Twitter */
 
 .theTweet {
-    width: 500px;
+    max-width: 500px;
     padding: 20px;
     border: 1px solid #ced6dc;
     border-radius: 8px;
