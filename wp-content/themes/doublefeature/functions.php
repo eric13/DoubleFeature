@@ -274,6 +274,8 @@ if( !function_exists("cleanTitle")){
 		$s = str_replace("(", "", "$s");
 		$s = str_replace(")", "", "$s");
 		$s = str_replace("…", "", "$s");
+		$s = str_replace("/", "", "$s");
+		$s = str_replace("\\", "", "$s");
 		$s = str_replace(" ", "-", "$s");
 		// Catch characters after encoding
 		$s = urlencode($s);
@@ -282,6 +284,7 @@ if( !function_exists("cleanTitle")){
 		$s = str_replace("%26%238217%3B", "", "$s");
 		$s = str_replace("%28", "", "$s");
 		$s = str_replace("%29", "", "$s");
+		$s = str_replace("%2F", "", "$s");
 		return $s;
 	}
 }
@@ -380,6 +383,8 @@ if( !function_exists("dfEpA")){
 			$episode = str_replace(",", "", "$episode");
 			$episode = str_replace("!", "", "$episode");
 			$episode = str_replace("…", "", "$episode");
+			$episode = str_replace("/", "", "$episode");
+			$episode = str_replace("\\", "", "$episode");
 
 			// Catch characters after encoding
 			$episode = urlencode($episode);
@@ -388,6 +393,7 @@ if( !function_exists("dfEpA")){
 			$episode = str_replace("%26%238217%3B", "", "$episode");
 			$episode = str_replace("%28", "", "$episode");
 			$episode = str_replace("%29", "", "$episode");
+			$episode = str_replace("%2F", "", "$episode");
 
 			$tracking = "http://media.blubrry.com/doublefeature/";
 			$domain = "media.doublefeature.fm/";
@@ -496,7 +502,7 @@ if( !function_exists("dfEpA")){
 						$my_ex<br><br>
 						<span class='pod-date'>Posted $the_post_date</span><br>
 						Hosted by Eric Thirteen & Michael Koester<br>
-					Tags:$list_of_cats</div>
+                        Tags:$list_of_cats</div>
 						<h3>Episode Notes</h3>";
 				}
 
@@ -504,7 +510,8 @@ if( !function_exists("dfEpA")){
 					$newContent .= "$my_ex<br><br>
 					<span class='pod-date'>Posted $the_post_date</span><br>
 					Hosted by Eric Thirteen &amp; Michael Koester<br>
-					<div class='someTags'>Tags: $list_of_cats</div></div>";
+					<div class='someTags'>Tags: $list_of_cats</div></div>
+                    <h3>Episode Notes</h3>";
 				}
 
 
@@ -678,7 +685,11 @@ if( !function_exists("dfEpA")){
 					}
 
 					// Since empty release defaults to January 1, 1970, assume no runtime means no release
-					if ($mov[$i]->runtime != "") { $bottomContent .= "Released: " . $mov[$i]->release . "<br>Runtime: ". $mov[$i]->runtime . " | "; }
+					if ($mov[$i]->runtime != "") {
+                        $bottomContent .= "Released: " . $mov[$i]->release . "<br>Runtime: ". $mov[$i]->runtime . " | ";
+                    } elseif ($mov[$i]->release != "") {
+                        $bottomContent .= "Released: " . $mov[$i]->release . "<br>";
+                    }
 
 					// Create IMDB and Wiki links
 					if (!in_array("killapalooza", $nn)) {
@@ -777,7 +788,7 @@ function createLoginBox() {
 						</div>
 					</form>
 				</div>
-				<p style='text-align:left; font-size: 1.05em;'><a href=https://patreon.com/doublefeature>Join us!</a> DoubleFeature.fm members can login and gain access to the entire podcast library for stream or download. There are numerous bonus content, themes, commentarys, videos and more avalible when you sign up! <a href=https://patreon.com/doublefeature>Register on Patreon</a> for ongoing access to the entire cloud library and exclusives only avaliable to members.</p>
+				<p style='text-align:left; font-size: 1.05em;'><a href='https://patreon.com/doublefeature'>Join us!</a> DoubleFeature.fm members can login and gain access to the entire podcast library for stream or download. There are numerous bonus content, themes, commentarys, videos and more avalible when you sign up! <a href='https://patreon.com/doublefeature'>Register on Patreon</a> for ongoing access to the entire cloud library and exclusives only avaliable to members.</p>
 				</div>
 	";
 	return $return;
